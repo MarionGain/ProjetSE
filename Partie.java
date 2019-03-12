@@ -60,7 +60,8 @@ class Partie {
 		this.quitter = quitter;
 	}
 
-	// 
+	
+	// Méthodes
 	private void menu (){
 
 
@@ -104,10 +105,12 @@ class Partie {
 		while(!quitter){
 			System.out.println("Vous avez sélectionné le mode multijoueurs. Comment souhaitez-vous jouer ?\n
 				1. Rejoindre une partie\n2.Créer une nouvelle partie\n3. Retour au menu précédent\n4.Quitter");
+
+			// récupérer le choix 
 			int choix = // choix utilisateur 
 
 			switch (choix) {
-				case 1 : ; break;
+				case 1 : this.rejoindrePartie(); break;
 				case 2 : this.mode(); break;
 				case 3 : this.menu(); break;
 				case 4 : this.setQuitter(true); break;
