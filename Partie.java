@@ -1,3 +1,6 @@
+
+import java.util.Scanner;
+
 class Partie {
 
 	// attributs 
@@ -97,6 +100,10 @@ class Partie {
 	}
 
 	private void creationClient(){
+		// a checker
+		System.out.println("Veuillez saisir l'adresse ip indiquée sur la machine de l'hôte"); // a modifier 
+		Scanner sc = new Scanner(System.in); 
+		String ip = sc.nextLine();
 
 	}
 
