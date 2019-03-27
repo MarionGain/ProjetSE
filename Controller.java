@@ -11,6 +11,8 @@ class Controller {
     private int dy;
     private Position p;
     private Robot robot;
+    private int widthBoard = 1500;
+    private int heightBoard = 1000;
 
     public Controller(Robot r){
         this.robot = r;
@@ -18,7 +20,14 @@ class Controller {
 
     public void move(){
         p = new Position(robot.getPosition().getX()+dx,robot.getPosition().getY()+dy);
-        if(p.getX()>)
+
+        if(robot.getPosition().getX() > widthBoard+robot.getWidth()){
+            p.setX(0-robot.getWidth());
+        }
+
+        if(robot.getPosition().getX() < 0-robot.getWidth()){
+            p.setX(widthBoard+robot.getWidth());
+        }
         
         robot.setPosition(p);
     }
