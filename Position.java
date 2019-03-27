@@ -1,47 +1,53 @@
+import java.awt.event.KeyEvent;
+
 class Position {
 
 	// attributs
-	private double x;
-	private double y;
-	private Etage etage;
+	private int x;
+	private int y;
+
+	//private Etage etage;
 
 	// constructeur par defaut
 	public Position (){
 		this.x = 0;
 		this.y = 0;
-		this.etage = null;
+        
+		//this.etage = null;
 	}
 
 	// constructeur standard
-	public Position(double x, double y, Etage e){
+    //!!!!!!!!! a rajoute quand ca seras bon un parametre etage !!!!!!!
+	public Position(int x, int y){
 		this.x = x;
 		this.y = y; 
-		this.etage = e;
+		//this.etage = e;
 	}
 
 	// accesseurs en lecture et ecriture
-	private double getX(){
+	public int getX(){
 		return this.x;
 	}
 
-	private double getY(){
+	public int getY(){
 		return this.y;
 	}
 
-	private Etage getEtage(){
-		return this.etage;
-	}
+	// private Etage getEtage(){
+	// 	return this.etage;
+	// }
 
-	private void setX(double x){
+	public void setX(int x){
 		this.x = x;
 	}
 
-	private void setY(double y){
+	public void setY(int y){
 		this.y = y;
 	}
 
-	private void setEtage(Etage e){
-		this.etage = e;
-	}
+	// private void setEtage(Etage e){
+	// 	this.etage = e;
+	// }
+
 
 }
