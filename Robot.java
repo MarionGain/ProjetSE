@@ -1,4 +1,9 @@
-Class Robot extends Personnage {
+import java.awt.*;
+
+// classe joueurs
+// implements runnable 
+
+Class Robot extends Personnage implements ActionListener{
 
 	// attributs 
 	private int niveau;
@@ -23,8 +28,15 @@ Class Robot extends Personnage {
 	}
 	
 	private void saut(){
+		// touche espace 
+		// modification de la position du robot 
 
 	}
 
+	private void tir(){
+		// touche au choix 
+		// New projectile 
+		
+	}
 
 }

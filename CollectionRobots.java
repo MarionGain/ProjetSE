@@ -1,3 +1,6 @@
+import java.awt.*;
+
+// collection de joueurs
 class CollectionRobots{
 
 	// attributs 

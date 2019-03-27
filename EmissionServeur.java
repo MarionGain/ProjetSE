@@ -1,9 +1,9 @@
 import java.io.*;
 
-class Emission implements Runnable{
+class EmissionServeur implements Runnable{
 	private PrintWriter out;
 
-	public Emission(PrintWriter out){
+	public EmissionServeur(PrintWriter out){
 		this.out = out;
 	}
 

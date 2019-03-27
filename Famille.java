@@ -1,9 +1,12 @@
+import java.awt.*;
+
 class Famille {
 
 	// attributs
 	private boolean etat;
 	private Position origine;
 	private Position positionActuelle;
+	private Image image;
 
 	// constructeur par defaut
 	public Famille(){
