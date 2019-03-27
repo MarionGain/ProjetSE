@@ -1,33 +1,33 @@
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-class Robot{
+class Projectile{
     private Position posOrigine;
     private Position posCourante;
-    private Image imRobot;
+    private Image imProjectile;
     private ImageIcon i;
 
-    public Robot(){
+    public Projectile(){
         loadImage();
         posOrigine = new Position(50,50);
         posCourante = new Position(50,50);
     }
 
     public void loadImage(){
-        i = new ImageIcon("robot.png");
-        imRobot = i.getImage(); 
+        i = new ImageIcon("projectile.png");
+        imProjectile = i.getImage(); 
     }
 
     public Image getImage(){
-        return this.imRobot;
+        return this.imProjectile;
     }
 
     public int getHeight(){
-        return this.imRobot.getHeight(null);
+        return this.imProjectile.getHeight(null);
     }
 
     public int getWidth(){
-        return this.imRobot.getWidth(null);
+        return this.imProjectile.getWidth(null);
     }
 
     public Position getPosition(){
@@ -38,4 +38,5 @@ class Robot{
         this.posCourante=p;
     }
     
+
 }

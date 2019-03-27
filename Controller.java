@@ -17,8 +17,9 @@ class Controller {
     }
 
     public void move(){
-        if(robot.getX()==)
         p = new Position(robot.getPosition().getX()+dx,robot.getPosition().getY()+dy);
+        if(p.getX()>)
+        
         robot.setPosition(p);
     }
 
