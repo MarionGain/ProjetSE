@@ -11,18 +11,85 @@ class Controller {
     private int dy;
     private Position p;
     private Robot robot;
+    private Projectile projectile;
 
-    public Controller(Robot r){
+    private int widthBoard = 1500;
+    private int heightBoard = 1000;
+    //ajout2
+    private int projectileSpeed = 3;
+    private boolean visible;
+    private int zoneDeTir= 400; 
+    private int directionTir=2; //1: gauche  2:droite
+    private int recupDirectionTir;// appele dans tir pour eviter que le projectile change de direction quand on bouge en meme temps le robot
+
+    public Controller(Robot r,Projectile p){
         this.robot = r;
+        this.projectile = p;
     }
 
     public void move(){
-        if(robot.getX()==)
+
         p = new Position(robot.getPosition().getX()+dx,robot.getPosition().getY()+dy);
+
+        if(robot.getPosition().getX() > widthBoard+robot.getWidth()){
+            p.setX(0-robot.getWidth());
+        }
+
+        if(robot.getPosition().getX() < 0-robot.getWidth()){
+            p.setX(widthBoard+robot.getWidth());
+        }
+
         robot.setPosition(p);
     }
 
-    //quand on appuie sur une fleche
+    //ajout 3
+    public void tir(){
+        if(projectile.isVisible() == false){
+
+            if(directionTir == 2){
+                recupDirectionTir=2;
+            }
+
+            if(directionTir == 1){
+                recupDirectionTir=1;
+            }
+
+            Position pos = new Position(robot.getPosition().getX(),robot.getPosition().getY()+(robot.getHeight()/2));
+            projectile.setPositionOrigine(pos);
+            projectile.setPosition(pos);
+            projectile.setVisible(true);
+        }
+    }
+
+    //met a jour la position du projectile
+    public void updateProjectile() {
+
+         if(recupDirectionTir == 1){
+            if (projectile.isVisible()) {
+                p = new Position(projectile.getPosition().getX()-projectileSpeed,projectile.getPosition().getY());
+                
+                if (projectile.getPosition().getX() > projectile.getPositionOrigine().getX()+zoneDeTir || projectile.getPosition().getX() <  projectile.getPositionOrigine().getX()-zoneDeTir) {
+                    projectile.setVisible(false);
+                }
+
+                projectile.setPosition(p);
+            } 
+        }
+
+        if(recupDirectionTir == 2){
+            if (projectile.isVisible()) {
+                p = new Position(projectile.getPosition().getX()+projectileSpeed,projectile.getPosition().getY());
+                
+                if (projectile.getPosition().getX() > projectile.getPositionOrigine().getX()+zoneDeTir || projectile.getPosition().getX() <  projectile.getPositionOrigine().getX()-zoneDeTir) {
+                    projectile.setVisible(false);
+                }
+
+                projectile.setPosition(p);
+            } 
+        }
+    } 
+    
+    //quand on appuie sur une fleche ou espace
     public void keyPressed(KeyEvent e) {
         System.out.println("keypressed");
 
@@ -30,10 +97,12 @@ class Controller {
 
         if (key == KeyEvent.VK_LEFT) {
             dx = -2;
+            directionTir = 1;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
             dx = 2;
+            directionTir = 2;
         }
 
         if (key == KeyEvent.VK_UP) {
@@ -42,6 +111,10 @@ class Controller {
 
         if (key == KeyEvent.VK_DOWN) {
             dy = 2;
+        }
+        //ajout 1
+        if (key == KeyEvent.VK_SPACE) {
+            tir();
         }
     }
 
