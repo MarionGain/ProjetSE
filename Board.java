@@ -13,14 +13,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 
+//ajout1 de la methode tirer appelant tir()
+
+
 class Board extends JPanel implements ActionListener{
     private Image i;
     private ImageIcon ii;
     private Timer timer;
 
     private Robot robot;
+    private Projectile projectile;
     private Controller control;
-
 
     private int posInitX ;
     private int posInitY ;
@@ -38,7 +41,8 @@ class Board extends JPanel implements ActionListener{
         setFocusable(true);
 
         robot = new Robot();
-        control = new Controller(robot);
+        projectile = new Projectile(robot);
+        control = new Controller(robot,projectile);
 
         timer = new Timer(vitesse, this);
         timer.start();
@@ -58,17 +62,19 @@ class Board extends JPanel implements ActionListener{
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.drawImage(robot.getImage(), robot.getPosition().getX(), robot.getPosition().getY(), this);
+        //ajout2
+        if(projectile.isVisible()==true){
+            g2d.drawImage(projectile.getImage(), projectile.getPosition().getX(),projectile.getPosition().getY(), this);
+        }
     }
-
 
     public void actionPerformed(ActionEvent evt){
-        step();
-    }
-
-    private void step() {
         control.move();
-        repaint(robot.getPosition().getX()-1, robot.getPosition().getY()-1, robot.getWidth()+2, robot.getHeight()+2);     
-    }  
+        control.updateProjectile();
+        
+        //changement de place
+        repaint();
+    }
 
     private class TAdapter extends KeyAdapter {
 
