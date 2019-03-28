@@ -6,16 +6,25 @@ class Projectile{
     private Position posCourante;
     private Image imProjectile;
     private ImageIcon i;
+    private Robot robot;
 
-    public Projectile(){
+    private int direction=2;
+
+    //ajout 1
+    private boolean visible;
+
+    public Projectile(Robot r){
+        this.robot = r;
+        visible = false;
         loadImage();
-        posOrigine = new Position(50,50);
-        posCourante = new Position(50,50);
+        posOrigine = new Position(robot.getPosition().getX(),robot.getPosition().getX()+(robot.getHeight()/2));
+        posCourante = new Position(robot.getPosition().getX(),robot.getPosition().getX()+(robot.getHeight()/2));
     }
 
     public void loadImage(){
         i = new ImageIcon("projectile.png");
-        imProjectile = i.getImage(); 
+        imProjectile = i.getImage();
+
     }
 
     public Image getImage(){
@@ -35,8 +44,26 @@ class Projectile{
     }
 
     public void setPosition(Position p){
-        this.posCourante=p;
+        this.posCourante = p;
     }
-    
+
+    public Position getPositionOrigine(){
+        return this.posOrigine;
+    }
+
+    public void setPositionOrigine(Position p){
+        this.posOrigine = p;
+    }
+
+    //ajout 2
+    public void setVisible(boolean b){
+        this.visible = b;
+    }
+
+    public boolean isVisible(){
+        return this.visible;
+    }
+
+
 
 }
