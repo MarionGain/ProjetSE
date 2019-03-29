@@ -12,22 +12,37 @@ class Controller {
     private Position p;
     private Robot robot;
     private Projectile projectile;
+    private Board board;
 
-    private int widthBoard = 1500;
-    private int heightBoard = 1000;
-    //ajout2
-    private int projectileSpeed = 3;
+    private int widthBoard = 1000;
+    private int heightBoard = 480;
+    
+    private int projectileSpeed = 5;
     private boolean visible;
-    private int zoneDeTir= 400; 
+    private int zoneDeTir= 250; 
     private int directionTir=2; //1: gauche  2:droite
     private int recupDirectionTir;// appele dans tir pour eviter que le projectile change de direction quand on bouge en meme temps le robot
 
-    public Controller(Robot r,Projectile p){
-        this.robot = r;
-        this.projectile = p;
+
+    public Controller(Board b){
+        this.board = b;
+        this.robot = b.getRobot();
+        p = new Position((b.getB_Width()/2)-20,24+ b.getB_Height()/4);
+        robot.setPositionOrigine(p);
+        robot.setPosition(p);
+        this.projectile = b.getProjectile();
     }
 
     public void move(){
+
+        if(robot.getPosition().getY() <= 0 && dy<0){
+            dy = 0;
+        }
+
+
+        if(robot.getPosition().getY() >= heightBoard-robot.getHeight() && dy > 0){
+            dy = 0;
+        }
 
         p = new Position(robot.getPosition().getX()+dx,robot.getPosition().getY()+dy);
 
@@ -64,29 +79,31 @@ class Controller {
     //met a jour la position du projectile
     public void updateProjectile() {
 
-         if(recupDirectionTir == 1){
+        //quand joueur tir vers la gauche
+        if(recupDirectionTir == 1){
             if (projectile.isVisible()) {
                 p = new Position(projectile.getPosition().getX()-projectileSpeed,projectile.getPosition().getY());
                 
-                if (projectile.getPosition().getX() > projectile.getPositionOrigine().getX()+zoneDeTir || projectile.getPosition().getX() <  projectile.getPositionOrigine().getX()-zoneDeTir) {
+                if (projectile.getPosition().getX() <  projectile.getPositionOrigine().getX()-zoneDeTir) {
                     projectile.setVisible(false);
                 }
 
-                projectile.setPosition(p);
             } 
         }
 
+        //quand joueur tir vers la droite
         if(recupDirectionTir == 2){
             if (projectile.isVisible()) {
                 p = new Position(projectile.getPosition().getX()+projectileSpeed,projectile.getPosition().getY());
                 
-                if (projectile.getPosition().getX() > projectile.getPositionOrigine().getX()+zoneDeTir || projectile.getPosition().getX() <  projectile.getPositionOrigine().getX()-zoneDeTir) {
+                if (projectile.getPosition().getX() > projectile.getPositionOrigine().getX()+zoneDeTir) {
                     projectile.setVisible(false);
                 }
 
-                projectile.setPosition(p);
             } 
         }
+
+        projectile.setPosition(p);
     } 
     
     //quand on appuie sur une fleche ou espace
