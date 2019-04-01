@@ -36,6 +36,7 @@ class Board extends JPanel implements ActionListener{
     private Projectile projectile;
     private Monstre monstre;
     private List<Monstre> monstres;
+    private Famille famille;
     private Controller control;
 
     //provisioire pour affichage
@@ -70,7 +71,7 @@ class Board extends JPanel implements ActionListener{
 
         initFond(fond);
         setBackground(Color.black);
-        choixFond= (int)(Math.random()*3);
+        choixFond= (int)(Math.random()*23);
 
         ingame = true;
 
@@ -79,12 +80,15 @@ class Board extends JPanel implements ActionListener{
         robot = new Robot();
         projectile = new Projectile(robot);
 
+
         etage = new Etage();
         etages = new ArrayList<Etage>();
         initEtages(etage, etages);
 
         monstres = new ArrayList<Monstre>();
         initMonstres(monstre, monstres,etages);
+
+        famille = new Famille(etages.get(3),0,2);
 
         control = new Controller(this);
 
@@ -205,7 +209,7 @@ class Board extends JPanel implements ActionListener{
         
         Graphics2D g2d = (Graphics2D) g;
         
-        if(robot.isVisible()){
+        if(robot.isVisible()==true){
             g2d.drawImage(robot.getImage(), robot.getPosition().getX(), robot.getPosition().getY(), this);
         }
         
@@ -220,6 +224,10 @@ class Board extends JPanel implements ActionListener{
             }
             i++;
         }
+
+        if(famille.isVisible()==true){
+            g2d.drawImage(famille.getImage(),famille.getPosition().getX(),famille.getPosition().getY(),this);
+        }
     }
 
     public void actionPerformed(ActionEvent evt){
@@ -227,6 +235,7 @@ class Board extends JPanel implements ActionListener{
         control.moveMonstre();
         control.updateMonstre();
         control.updateProjectile();
+        control.moveFamille();
         control.testCollision();
         
         repaint();
@@ -265,5 +274,9 @@ class Board extends JPanel implements ActionListener{
 
     public List<Monstre> getListMonstres(){
         return this.monstres;
+    }
+
+    public Famille getFamille(){
+        return this.famille;
     }
 }
