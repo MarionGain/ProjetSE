@@ -1,47 +1,72 @@
-class Famille {
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import java.awt.Rectangle;
 
-	// attributs
-	private boolean etat;
-	private Position origine;
-	private Position positionActuelle;
+class Famille{
+    private Position posOrigine;
+    private Position posCourante;
+    private Image imFamille;
+    private ImageIcon i;
+    private Etage etage;
+    private int direction;
 
-	// constructeur par defaut
-	public Famille(){
-		this.etat = false;
-		this.origine = null;
-		this.positionActuelle = null;
-	}
+    private int x;
+    private boolean visible;
 
-	// constructeur standard
-	public Famille(boolean e, Position o, Position a){
-		this.etat = e;
-		this.origine = o;
-		this.positionActuelle = a;
-	}
+    public Famille(Etage e, int x, int dir){
+        this.etage = e;
+        visible = true;
+        loadImage();
+        posOrigine = new Position(x,e.getPosition().getY()-this.getHeight());
+        posCourante = new Position(x,e.getPosition().getY()-this.getHeight());
+        this.direction = dir;
+    }
 
-	// accesseurs en lecture et ecriture
-	private boolean getEtat() {
-		return this.etat;
-	}
+    public void loadImage(){
+        i = new ImageIcon("Images/Personnages/fille.png");
+        imFamille = i.getImage(); 
+    }
 
-	private Position getOrigine() {
-		return this.origine;
-	}
+    public Image getImage(){
+        return this.imFamille;
+    }
 
-	private Position getPosition() {
-		return this.positionActuelle;
-	}
+    public int getHeight(){
+        return this.imFamille.getHeight(null);
+    }
 
-	private void setEtat(boolean e){
-		this.etat = e;
-	}
+    public int getWidth(){
+        return this.imFamille.getWidth(null);
+    }
 
-	private void setOrigine(Position o){
-		this.origine = o;
-	}
+    public Position getPosition(){
+        return posCourante;
+    }
 
-	private void setPosition(Position pa){
-		this.positionActuelle = pa;
-	}
+    public void setPosition(Position p){
+        this.posCourante=p;
+    }
 
+    public boolean isVisible(){
+        return this.visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public int getDirection(){
+        return this.direction;
+    }
+
+    public void setDirection(int dir){
+        this.direction=dir;
+    }
+
+    //Ajout
+    //retourne les "limitations" du rectangle de l image, necessaire pour la collision
+    public Rectangle getBounds() {
+        //+12/-12 : pour eviter que le robot disparaisse avant d avoir touche visuellement le monstre
+        return new Rectangle(this.getPosition().getX()+18, this.getPosition().getY(), this.getWidth()-15, this.getHeight());
+    }
 }
