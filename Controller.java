@@ -16,6 +16,7 @@ class Controller {
     private Robot robot;
     private int dx;
     private int dy;
+
     private Projectile projectile;
     private int projectileSpeed = 5;
     private int zoneDeTir= 250; 
@@ -25,6 +26,9 @@ class Controller {
     private Monstre monstre;
     private List<Monstre> monstres;
     private int avanceeMonstre=0;
+
+    private Famille famille;
+    private int avanceeFamille=0;
 
     private Board board;
     private int widthBoard = 1000;
@@ -40,6 +44,7 @@ class Controller {
         this.projectile = b.getProjectile();
         this.monstre = b.getMonstre();
         this.monstres = b.getListMonstres();
+        this.famille = b.getFamille();
 
     }
 
@@ -104,6 +109,30 @@ class Controller {
             monstres.get(i).setPosition(p);
             i++;
         }
+    }
+
+    //deplacement famille
+    public void moveFamille(){
+        if(famille.getDirection()==1){
+            avanceeFamille = -1;
+        }
+
+        if(famille.getDirection()==2){
+            avanceeFamille = 1;
+        }
+
+        p = new Position(famille.getPosition().getX()+avanceeFamille, famille.getPosition().getY());
+
+        if(famille.getPosition().getX() > widthBoard+famille.getWidth()){
+            p.setX(0-famille.getWidth());
+        }
+
+        if(famille.getPosition().getX() < 0-famille.getWidth()){
+            p.setX(widthBoard+famille.getWidth());
+        }
+
+        famille.setPosition(p);
+
     }
 
     public void tir(){
@@ -178,6 +207,15 @@ class Controller {
                     projectile.setVisible(false);
                     System.out.println("collision projectile monstre");
                 }
+            }
+        }
+
+        if(famille.isVisible()==true){
+            Rectangle rRobot = robot.getBounds();
+            Rectangle rFamille = famille.getBounds();
+            if(rRobot.intersects(rFamille)){
+                famille.setVisible(false);
+                System.out.println("collision robot famille");
             }
         }
 
