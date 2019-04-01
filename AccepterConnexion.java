@@ -18,7 +18,7 @@ class AccepterConnexion implements Runnable{
 				socket = ss.accept();
 				System.out.println("Un client se connecte");
 				// truc à rajouter
-				t1.start();
+				// t1.start();
 			}
 		}
 		catch(IOException e){

@@ -6,10 +6,17 @@ class Client{
 	public static Socket socket = null;
 	public static Thread t1;
 
-	public Client(int port, InetAddress ip){
+public static void main (String args []){
+	// public Client(int port, InetAddress ip){
+		
+		// Socket socket = new Socket(adresse, port);
+		int port = 80;
 		try{
-			socket = new Socket(ip,port); 
-			t1 = new Thread(new GestionDonneesClient(socket));
+			InetAddress adresse = InetAddress.getLocalHost();// "192.168.1.20";
+			Socket socket = new Socket(adresse,port); 
+			//t1 = new Thread(new GestionDonneesClient(socket));
+			System.out.println("Le client est connecté");
+			// t1.start();
 		}
 
 		catch(UnknownHostException e){
@@ -23,8 +30,7 @@ class Client{
 		
 	}
 
-	public void lancerClient(){
-		System.out.println("Le client est connecté");
-		t1.start();
-	}
+	// public void lancerClient(){
+
+	// }
 }
