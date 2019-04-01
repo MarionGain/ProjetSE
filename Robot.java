@@ -1,20 +1,27 @@
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import java.awt.Rectangle;
 
 class Robot{
     private Position posOrigine;
     private Position posCourante;
     private Image imRobot;
     private ImageIcon i;
+    private int nbVies = 3;
+
+    private boolean visible;
+    private int x;
+    private int y;
 
     public Robot(){
+        visible = true;
         loadImage();
-        posOrigine = new Position(50,50);
-        posCourante = new Position(50,50);
+        posOrigine = new Position(0,0);
+        posCourante = new Position(0,0);
     }
 
     public void loadImage(){
-        i = new ImageIcon("robot.png");
+        i = new ImageIcon("Images/Personnages/robot.png");
         imRobot = i.getImage(); 
     }
 
@@ -36,6 +43,36 @@ class Robot{
 
     public void setPosition(Position p){
         this.posCourante=p;
+    }
+
+    public Position getPositionOrigine(){
+        return this.posOrigine;
+    }
+
+    public void setPositionOrigine(Position p){
+        this.posOrigine = p;
+    }
+
+    public boolean isVisible(){
+        return this.visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public int getNbVies(){
+        return this.nbVies;
+    }
+
+    public void vieEnMoins(){
+        this.nbVies --;
+    }
+
+    //retourne les "limitations" du rectangle de l image necessaire pour la collision
+    //+8/-5 : pour eviter que le robot ne disparaisse avant qu il ne touche le monstre visuellement
+    public Rectangle getBounds() {
+        return new Rectangle(this.getPosition().getX()+8, this.getPosition().getY(), this.getWidth()-5, this.getHeight());
     }
     
 }

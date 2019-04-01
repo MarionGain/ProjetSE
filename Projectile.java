@@ -1,5 +1,6 @@
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import java.awt.Rectangle;
 
 class Projectile{
     private Position posOrigine;
@@ -7,10 +8,7 @@ class Projectile{
     private Image imProjectile;
     private ImageIcon i;
     private Robot robot;
-
-    private int direction=2;
-
-    //ajout 1
+    
     private boolean visible;
 
     public Projectile(Robot r){
@@ -22,7 +20,7 @@ class Projectile{
     }
 
     public void loadImage(){
-        i = new ImageIcon("projectile.png");
+        i = new ImageIcon("Images/Personnages/projectile.png");
         imProjectile = i.getImage();
 
     }
@@ -55,7 +53,6 @@ class Projectile{
         this.posOrigine = p;
     }
 
-    //ajout 2
     public void setVisible(boolean b){
         this.visible = b;
     }
@@ -64,6 +61,11 @@ class Projectile{
         return this.visible;
     }
 
+    //Ajout
+    //retourne les "limitations" du rectangle de l image necessaire pour la collision
+    public Rectangle getBounds() {
+        return new Rectangle(this.getPosition().getX(), this.getPosition().getY(), this.getWidth(), this.getHeight());
+    }
 
 
 }

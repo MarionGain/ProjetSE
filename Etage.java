@@ -1,55 +1,52 @@
+import java.awt.*;
+
 class Etage {
 
 	// attributs 
-	private int id; // static ? 
-	private CollectionAdversaires adversaires;
-	private Famille famille;
+	private int id;
+	//private Famille famille;
 	private Position position;
 
 	// constructeur par defaut
 	public Etage(){
-		this.id = ; //
-		this.CollectionAdversaires = null;
-		this.famille = null;
+		//this.id = ;
+		//this.famille = null;
 		this.position = null;
 
 	}
 
 	// constructeur standard 
-	public Etage(int id, CollectionAdversaires a, Famille f, Position p){
-		this.id = id;
-		this.adversaires = a;
-		this.famille = f;
-		this.position = p;
+	//a rajoute id et famille en parametre
+	public Etage(int y){
+		//this.id = id;
+		//this.famille = f;
+		this.position = new Position(0,y);
 	}
 
 	// accesseurs en lecture et ecriture
-	private int getId (){
+	public int getId (){
 		return this.id;
 	}
 
-	private CollectionAdversaires getAdversaires(){
-		return this.CollectionAdversaires;
-	}
+	// private Famille getFamille(){
+	// 	return this.famille;
+	// }
 
-	private void setAdversaires(CollectionAdversaires c){
-		this.adversaires = c;
-	}
+	// private void setFamille(Famille f){
+	// 	this.famille = f;
+	// }
 
-	private Famille getFamille(){
-		return this.famille;
-	}
-
-	private void setFamille(Famille f){
-		this.famille = f;
-	}
-
-	private Position getPosition(){
+	public Position getPosition(){
 		return this.position;
 	}
 
-	private void setPosition(Position p){
+	public void setPosition(Position p){
 		this.position = p;
 	}
+
+	public void doEtage(Graphics g, int x, int y, int largeur, int hauteur ){
+		g.fillRect(x,y,largeur,hauteur);
+	}
+
 
 }

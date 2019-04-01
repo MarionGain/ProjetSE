@@ -9,7 +9,8 @@ public class Drol extends JFrame{
     public void initUI(){
         this.add(new Board());
         this.setResizable(false);
-        this.setSize(1500,1000);
+        //this.setSize(1500,1000);
+        pack();
 
         this.setTitle("DROL");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -7,18 +7,23 @@ class Monstre{
     private Position posCourante;
     private Image imMonstre;
     private ImageIcon i;
+    private Etage etage;
+    private int direction;
 
     private int x;
-    private int y;
+    private boolean visible;
 
-    public Monstre(){
+    public Monstre(Etage e, int x, int dir){
+        this.etage = e;
+        visible = true;
         loadImage();
-        posOrigine = new Position(50,50);
-        posCourante = new Position(50,50);
+        posOrigine = new Position(x,e.getPosition().getY()-this.getHeight());
+        posCourante = new Position(x,e.getPosition().getY()-this.getHeight());
+        this.direction = dir;
     }
 
     public void loadImage(){
-        i = new ImageIcon("monstre.png");
+        i = new ImageIcon("Images/Personnages/monstre.png");
         imMonstre = i.getImage(); 
     }
 
@@ -42,11 +47,27 @@ class Monstre{
         this.posCourante=p;
     }
 
+    public boolean isVisible(){
+        return this.visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public int getDirection(){
+        return this.direction;
+    }
+
+    public void setDirection(int dir){
+        this.direction=dir;
+    }
 
     //Ajout
     //retourne les "limitations" du rectangle de l image, necessaire pour la collision
     public Rectangle getBounds() {
-        return new Rectangle(this.getPosition().getX(), this.getPosition().getY(), this.getWidth(), this.getHeight());
+        //+12/-12 : pour eviter que le robot disparaisse avant d avoir touche visuellement le monstre
+        return new Rectangle(this.getPosition().getX()+18, this.getPosition().getY(), this.getWidth()-15, this.getHeight());
     }
     
 }
