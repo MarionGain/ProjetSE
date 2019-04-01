@@ -1,19 +1,29 @@
 import java.io.*;
+import java.net.*;
+import java.util.Scanner;
 
-class Emission implements Runnable{
+class EmissionServeur implements Runnable{
+	
 	private PrintWriter out;
+	private Scanner sc;
+	private String message = null;
 
-	public Emission(PrintWriter out){
+	public EmissionServeur(PrintWriter out){
 		this.out = out;
 	}
 
 	public void run(){
 
-
+	sc = new Scanner(System.in);
+		
 		while(true){
 
-
-			// Envoie des donnees 
+			// System.out.println("Serveur votre message : ");
+			System.out.println("Serveur votre message :");
+			//out.flush();
+			message = sc.nextLine();
+			//int test = 10;
+			out.println(message);
 			out.flush();
 		}
 	}

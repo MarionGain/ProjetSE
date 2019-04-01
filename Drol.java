@@ -19,6 +19,20 @@ public class Drol extends JFrame{
     }
 
     public static void main(String args[]){
-        Drol drol = new Drol();
+       // Drol drol = new Drol();
+
+
+
+
+        Partie partie = new Partie();
+        Entrees e = new Entrees();
+        Sorties s = new Sorties();
+
+
+        partie.creationServeur();
+       // partie.menu();
+       // System.out.println("bla");
+        // partie.creationClient();
+       // partie.rejoindrePartie();
     }
 }

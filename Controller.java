@@ -164,7 +164,7 @@ class Controller {
             if(rMonstre.intersects(rRobot)){
                 robot.setPosition(robot.getPositionOrigine());
                 robot.vieEnMoins();
-                System.out.println("collision robot monstre");
+                // System.out.println("collision robot monstre");
             }
         }
 
@@ -176,7 +176,7 @@ class Controller {
                 if(rMonstre.intersects(rProjectile)){
                     monstre.setVisible(false);
                     projectile.setVisible(false);
-                    System.out.println("collision projectile monstre");
+                    // System.out.println("collision projectile monstre");
                 }
             }
         }

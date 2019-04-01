@@ -1,22 +1,23 @@
 import java.io.*;
 import java.net.*;
 
-class Client{
+public class Client implements Runnable{
 
-	public static Socket socket = null;
-	public static Thread t1;
+	private Socket socket = null;
+	private Thread t1;
+	// private PrintWriter out = null;
+	// private BufferedReader in = null; 
+	// int port = 80;
+	private String ip = "192.168.1.20";
 
-public static void main (String args []){
-	// public Client(int port, InetAddress ip){
-		
-		// Socket socket = new Socket(adresse, port);
-		int port = 80;
+	public Client(int port, String ip){
+	
 		try{
-			InetAddress adresse = InetAddress.getLocalHost();// "192.168.1.20";
-			Socket socket = new Socket(adresse,port); 
-			//t1 = new Thread(new GestionDonneesClient(socket));
-			System.out.println("Le client est connecté");
-			// t1.start();
+
+			// InetAddress adresse = InetAddress.getLocalHost();// "192.168.1.20";
+			this.socket = new Socket(ip,port); 
+			// this.out = new PrintWriter(socket.getOutputStream());
+			// this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		}
 
 		catch(UnknownHostException e){
@@ -30,7 +31,16 @@ public static void main (String args []){
 		
 	}
 
-	// public void lancerClient(){
+	public void run(){
+ 		t1 = new Thread(new GestionDonneesClient(socket));
+ 		// try{
+ 		// 	System.out.println(in.readLine());
+ 		// }
+ 		// catch(IOException e){
+ 		// 	e.printStackTrace();
+ 		// }
+		System.out.println("Le client est connecté");
 
-	// }
+		t1.start();
+	}
 }
