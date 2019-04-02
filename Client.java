@@ -3,18 +3,20 @@ import java.net.*;
 
 public class Client implements Runnable{
 
-	private Socket socket = null;
+	private Socket socket;
 	private Thread t1;
+	private Board board;
 	// private PrintWriter out = null;
 	// private BufferedReader in = null; 
 	// int port = 80;
-	private String ip = "192.168.1.20";
+	// private String ip = "192.168.1.20";
 
-	public Client(int port, String ip){
-	
+	public Client(int port, String ip, Board b){
+		
+			this.board = b;
+
 		try{
 
-			// InetAddress adresse = InetAddress.getLocalHost();// "192.168.1.20";
 			this.socket = new Socket(ip,port); 
 			// this.out = new PrintWriter(socket.getOutputStream());
 			// this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -32,7 +34,7 @@ public class Client implements Runnable{
 	}
 
 	public void run(){
- 		t1 = new Thread(new GestionDonneesClient(socket));
+ 		t1 = new Thread(new GestionDonneesClient(socket, board));
  		// try{
  		// 	System.out.println(in.readLine());
  		// }

@@ -19,6 +19,18 @@ class EmissionServeur implements Runnable{
 		while(true){
 
 			// System.out.println("Serveur votre message : ");
+			// try{
+			// 	Thread.sleep(20);
+			// }
+			// catch(InterruptedException e){
+			// 	e.printStackTrace();
+			// }
+			try {
+            Thread.currentThread().sleep(3000);
+         } catch (InterruptedException e) {
+            e.printStackTrace();
+         }
+
 			System.out.println("Serveur votre message :");
 			//out.flush();
 			message = sc.nextLine();

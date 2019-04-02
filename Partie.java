@@ -13,6 +13,7 @@ class Partie {
 	public static boolean partie; // une partie est creee
 	private Scanner sc = new Scanner (System.in);
 	private Serveur serveur = null;
+	private Board board;
 
 
 	// constructeur par defaut 
@@ -23,7 +24,18 @@ class Partie {
 		this.robotCourant = 0;
 		this.quitter = false;
 		this.partie = false;
+		this.board = null;
 	}
+
+	public Partie(Board b){
+		// this.labyrinthe = null;
+		this.board = b;
+		this.robots = null;
+		this.robotCourant = 0;
+		this.quitter = false;
+		this.partie = false;
+	}
+
 
 	// public Partie(Labyrinthe l, CollectionRobots cr, int robot){
 	// 	this.labyrinthe = l;
@@ -86,7 +98,7 @@ class Partie {
 
 
 			switch (choix1){
-				case 1 : this.creationServeur(); //this.creationClient(); 
+				case 1 : this.creationServeur(); this.creationClient(); 
 				break;// création serveur + client 
 				case 2 : this.multijoueurs(); break;
 				case 3 : this.setQuitter(true); break;
@@ -107,11 +119,11 @@ class Partie {
 	}
 
 	public void creationServeur(){
-		 this.serveur = new Serveur(80,1);
-		 serveur.communiquer(0);
-		// Thread ts = new Thread(new Serveur(80));
+		 // this.serveur = new Serveur(80,1);
+		 // serveur.communiquer(0);
+		Thread ts = new Thread(new Serveur(2000));
 		this.setPartie(true);
-		// ts.start();
+		ts.start();
 		
 	}
 
@@ -121,14 +133,14 @@ class Partie {
 		Scanner sc = new Scanner(System.in); 
 		String ip = sc.nextLine();
 		
-		// Thread tc = new Thread(new Client(80,ip));
-		// tc.start();
+		Thread tc = new Thread(new Client(2000,ip,board));
+		tc.start();
 
 	}
 
 	private void multijoueurs(){
 
-		while(!quitter){
+		// while(!quitter){
 			System.out.println("Vous avez sélectionné le mode multijoueurs. Comment souhaitez-vous jouer ?\n1. Rejoindre une partie\n2. Créer une nouvelle partie\n3. Retour au menu précédent\n 4.Quitter");
 
 			// récupérer le choix 
@@ -142,7 +154,7 @@ class Partie {
 				default : System.out.println("Ce choix est indisponible, veuillez réessayer");
 			}
 
-		}
+		// }
 		
 	}
 
@@ -162,7 +174,7 @@ class Partie {
 
 	private void mode (){
 
-		while(!quitter){
+		// while(!quitter){
 			System.out.println("Vous avez sélectionné la création de partie. Quel mode de jeu souhaitez-vous utiliser ?\n1. Mode coopératif\n2. Mode collaboratif\n3. Mode combat\n4. Retourner au menu précédent\n5. Quitter");
 			int choix = Integer.parseInt(sc.nextLine());// choix utilisateur 
 
@@ -174,7 +186,7 @@ class Partie {
 				case 5 : this.setQuitter(true); break;
 				default : System.out.println("Ce choix est indisponible, veuillez réessayer");
 			}
-		}
+		// }
 	}
 
 	private void modeCollaboratif(){

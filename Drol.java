@@ -2,12 +2,16 @@ import javax.swing.JFrame;
 import java.awt.EventQueue;
 
 public class Drol extends JFrame{
+
+    private Board b;
+
     public Drol(){
         initUI();
     }
 
     public void initUI(){
-        this.add(new Board());
+        this.b = new Board();
+        this.add(b);
         this.setResizable(false);
         //this.setSize(1500,1000);
         pack();
@@ -18,21 +22,19 @@ public class Drol extends JFrame{
         this.setVisible(true);
     }
 
+    public Board getBoard(){
+        return this.b;
+    }
+
     public static void main(String args[]){
-       // Drol drol = new Drol();
+        Drol drol = new Drol();
 
+        Partie partie = new Partie(drol.getBoard()); // ajouter board 
 
-
-
-        Partie partie = new Partie();
-        Entrees e = new Entrees();
-        Sorties s = new Sorties();
-
-
-        partie.creationServeur();
-       // partie.menu();
-       // System.out.println("bla");
+        // partie.creationServeur();
+        partie.menu();
+        System.out.println("bla");
         // partie.creationClient();
-       // partie.rejoindrePartie();
+        // partie.rejoindrePartie();
     }
 }
