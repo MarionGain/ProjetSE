@@ -8,24 +8,36 @@ class Robot{
     private Image imRobot;
     private ImageIcon i;
     private int nbVies = 3;
-
+    private boolean passage;
     private boolean visible;
     private int x;
     private int y;
+    private int direction;
 
     public Robot(){
         visible = true;
         loadImage();
         posOrigine = new Position(0,0);
         posCourante = new Position(0,0);
+        passage = false;
+        direction =2;
     }
 
     public void loadImage(){
-        i = new ImageIcon("Images/Personnages/robot.png");
-        imRobot = i.getImage(); 
+            i = new ImageIcon("Images/Personnages/robotDroite.png");
+            imRobot = i.getImage(); 
     }
 
     public Image getImage(){
+        if(direction == 1){
+            i = new ImageIcon("Images/Personnages/robotGauche.png");
+            imRobot = i.getImage();
+        }
+        else{
+            i = new ImageIcon("Images/Personnages/robotDroite.png");
+            imRobot = i.getImage();
+        }
+
         return this.imRobot;
     }
 
@@ -69,10 +81,27 @@ class Robot{
         this.nbVies --;
     }
 
+    public boolean getPassage(){
+        return this.passage;
+    }
+
+    public void setPassage(boolean p){
+        this.passage = p;
+    }
+
+    public int getDirection(){
+        return this.direction;
+    }
+
+    public void setDirection(int d){
+        this.direction = d;
+    }
+
     //retourne les "limitations" du rectangle de l image necessaire pour la collision
-    //+8/-5 : pour eviter que le robot ne disparaisse avant qu il ne touche le monstre visuellement
+    //ajout ou retrait de pixel : pour eviter que le robot ne disparaisse avant qu il ne touche le monstre visuellement
+    //dimension robot : 58*84
     public Rectangle getBounds() {
-        return new Rectangle(this.getPosition().getX()+8, this.getPosition().getY(), this.getWidth()-5, this.getHeight());
+        return new Rectangle(this.getPosition().getX()+30, this.getPosition().getY()+5, this.getWidth()-18, this.getHeight()-16);
     }
     
 }
