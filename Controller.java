@@ -16,11 +16,12 @@ class Controller {
     private Robot robot;
     private int dx;
     private int dy;
+    private boolean descendre;
 
     private Projectile projectile;
     private int projectileSpeed = 5;
     private int zoneDeTir= 250; 
-    private int directionTir=2; //1: gauche  2:droite
+    private int directionTir; //1: gauche  2:droite
     private int recupDirectionTir;// appele dans tir pour eviter que le projectile change de direction quand on bouge en meme temps le robot
 
     private Monstre monstre;
@@ -30,6 +31,11 @@ class Controller {
     private Famille famille;
     private int avanceeFamille=0;
 
+    private Etage etage;
+    private List<Etage> etages;
+    private Trappe trappe;
+    private List<Trappe> trappes;
+
     private Board board;
     private int widthBoard = 1000;
     private int heightBoard = 480;
@@ -38,13 +44,21 @@ class Controller {
 
         this.board = b;
         this.robot = b.getRobot();
-        p = new Position((b.getB_Width()/2)-20,24+ b.getB_Height()/4);
+        p = new Position((b.getB_Width()/2)-20, 5+b.getB_Height()/4);
         robot.setPositionOrigine(p);
         robot.setPosition(p);
+        this.descendre = robot.getPassage();
+        
         this.projectile = b.getProjectile();
+        this.directionTir = robot.getDirection();
         this.monstre = b.getMonstre();
         this.monstres = b.getListMonstres();
         this.famille = b.getFamille();
+
+        this.etage = b.getEtage();
+        this.etages = b.getListEtages();
+        this.trappe = b.getTrappe();
+        this.trappes = b.getListTrappes();
 
     }
 
@@ -219,6 +233,56 @@ class Controller {
             }
         }
 
+        
+        int i=0;
+        //tant qu on a pas mis correctement move du robot
+        for(Etage etage : etages){
+
+            Rectangle rRobot = robot.getBounds();
+            Rectangle rEtage = etage.getBounds();
+            //test collision avec etage pour que le robot n aille pas plus bas
+            //probleme car test l etage courant ce qui fait que le robot ne va pas vraiment jusqu en bas
+            if(rRobot.intersects(rEtage)){
+                dy=0;
+            }
+
+            if(etage.getListTrappes() != null){
+                for(Trappe trappe : etage.getListTrappes()){           
+                    Rectangle rTrappe = trappe.getBounds();
+ 
+                    //test collision entre robot et trappe + demande de passage trappe
+                    if(rRobot.intersects(rTrappe) && (robot.getPassage() == true)){
+                            //Rectangle rEtageInf = etages.get(i+1).getBounds();
+                            System.out.println("descendre collision : "+descendre);
+                            trappe.setVisible(false);
+                            //dy = 2;
+                            // if(rRobot.intersects(rEtageInf)){
+                            //     dy = 0;
+                            // }
+                            for(Monstre monstre : monstres){
+                                Rectangle rMonstre = monstre.getBounds();
+                                if(rMonstre.intersects(rTrappe)){
+                                    if(monstre.getDirection()==1){
+                                        p = new Position(monstre.getPosition().getX()-avanceeMonstre,monstre.getPosition().getY());
+                                    }
+                                    if(monstre.getDirection()==2){
+                                        p = new Position(monstre.getPosition().getX()+avanceeMonstre,monstre.getPosition().getY());
+                                    }
+                                    monstre.setPosition(p);
+                                }
+                            }
+                    }
+                    else{
+                        trappe.setVisible(true);
+                        descendre = false;
+                    }
+
+                }
+            }
+        }
+
+        i++;
+
     }
     
     //quand on appuie sur une fleche ou espace
@@ -229,20 +293,32 @@ class Controller {
 
         if (key == KeyEvent.VK_LEFT) {
             dx = -2;
+            robot.setDirection(1);
             directionTir = 1;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
             dx = 2;
+            robot.setDirection(2);
             directionTir = 2;
         }
 
         if (key == KeyEvent.VK_UP) {
             dy = -2;
+            robot.setPassage(true);
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 2;
+            dy = 0;
+            robot.setPassage(true);
+            // for(Etage etage : etages){
+            //     for(Trappe trappe : etage.getListTrappes()){
+            //         if(trappe.isVisible()==false){
+            //             dy = 2;
+            //         }
+            //     }
+            // }
+
         }
         
         if (key == KeyEvent.VK_SPACE) {
@@ -264,11 +340,13 @@ class Controller {
         }
 
         if (key == KeyEvent.VK_UP) {
-            dy = 0;
+            dy = 2;
+            robot.setPassage(false);
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 0;
+            dy =0;
+            robot.setPassage(false);
         }
     }
 
