@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//ajout1 de la methode tirer appelant tir()
-
-
 class Board extends JPanel implements ActionListener{
 
     private Image i;
@@ -47,6 +44,11 @@ class Board extends JPanel implements ActionListener{
     //image de fond
     private FondDrol fond [] = new FondDrol[23];
     private int choixFond;
+
+    private Trappe trappe;
+    private List<Trappe> trappes;
+    private int largeurTrappe = 50;
+    private int hauteurTrappe = 10;
 
     private Etage etage;
     private List<Etage> etages;
@@ -80,6 +82,8 @@ class Board extends JPanel implements ActionListener{
         robot = new Robot();
         projectile = new Projectile(robot);
 
+        trappe = new Trappe();
+        trappes = new ArrayList<Trappe>();
 
         etage = new Etage();
         etages = new ArrayList<Etage>();
@@ -126,12 +130,42 @@ class Board extends JPanel implements ActionListener{
 
     }
 
+    
     public void initEtages(Etage etage, List<Etage> etages){
 
-        etages.add(new Etage(B_Height-9*(B_Height/16)-10));
-        etages.add(new Etage(B_Height-6*(B_Height/16)-10));
-        etages.add(new Etage(B_Height-3*(B_Height/16)-10));
+        //creation liste trappes
+        List<Trappe> trappes1 = new ArrayList<Trappe>();
+        trappes1.add(new Trappe());
+        trappes1.add(new Trappe());
+        List<Trappe> trappes2 = new ArrayList<Trappe>();
+        trappes2.add(new Trappe());
+        List<Trappe> trappes3 = new ArrayList<Trappe>();
+        trappes3.add(new Trappe());
+        trappes3.add(new Trappe());
+
+        //creation des etage
+        etages.add(new Etage(trappes1,B_Height-9*(B_Height/16)-10));
+        etages.add(new Etage(trappes2,B_Height-6*(B_Height/16)-10));
+        etages.add(new Etage(trappes3,B_Height-3*(B_Height/16)-10));
         etages.add(new Etage(B_Height-10));
+
+        //attribution des positions aux trappes
+
+        //etage 3
+        Position p = new Position(80,etages.get(0).getPosition().getY());
+        etages.get(0).getListTrappes().get(0).setPosition(p);
+        Position p1 = new Position(B_Width-(80+largeurTrappe),etages.get(0).getPosition().getY());
+        etages.get(0).getListTrappes().get(1).setPosition(p1);
+
+        //etage 2 
+        Position p2 = new Position(B_Width/2-largeurTrappe/2,etages.get(1).getPosition().getY());
+        etages.get(1).getListTrappes().get(0).setPosition(p2);
+
+        //etage 1
+        Position p3 = new Position(80,etages.get(2).getPosition().getY());
+        etages.get(2).getListTrappes().get(0).setPosition(p3);
+        Position p4 = new Position(B_Width-(80+largeurTrappe),etages.get(2).getPosition().getY());
+        etages.get(2).getListTrappes().get(1).setPosition(p4);
 
     }
 
@@ -154,7 +188,7 @@ class Board extends JPanel implements ActionListener{
         super.paintComponent(g);
 
         doFond(g,fond,choixFond);
-        doMap(g,etages);
+        doMap(g,etages,trappes);
         doDrawing(g);
         
         Toolkit.getDefaultToolkit().sync();
@@ -168,7 +202,7 @@ class Board extends JPanel implements ActionListener{
     }
 
     //affichage de la map
-    public void doMap(Graphics g, List<Etage> etages){
+    public void doMap(Graphics g, List<Etage> etages, List<Trappe> trappes){
         Color c = g.getColor();
         Color violet = new Color(85,37,112);
         Color rose = new Color(252,35,255);
@@ -196,10 +230,22 @@ class Board extends JPanel implements ActionListener{
 
         g.fillRect(3*B_Width/4-50,0,10,B_Height/4);
 
-        g.setColor(Color.GRAY);
-        
         for(Etage etage : etages){
-            etage.doEtage(g,etage.getPosition().getX(), etage.getPosition().getY(),B_Width,10);
+            g.setColor(Color.GRAY);
+            etage.doEtage(g,etage.getPosition().getX(), etage.getPosition().getY(),B_Width,10); 
+
+            //condition necessaire: le rez de chaussee n a pas de trappe
+            if(etage.getListTrappes() != null){
+                for(Trappe trappe : etage.getListTrappes()){
+                    if(trappe.isVisible() == true){
+                        g.setColor(violet);
+                    }
+                    else{
+                        g.setColor(Color.BLACK);
+                    }
+                    trappe.doTrappe(g, trappe.getPosition().getX(), trappe.getPosition().getY());
+                }
+            }
         }
  
         g.setColor(c);
@@ -278,5 +324,19 @@ class Board extends JPanel implements ActionListener{
 
     public Famille getFamille(){
         return this.famille;
+    }
+
+    public Etage getEtage(){
+        return this.etage;
+    }
+    public List<Etage> getListEtages(){
+        return this.etages;
+    }
+
+    public Trappe getTrappe(){
+        return this.trappe;
+    }
+    public List<Trappe> getListTrappes(){
+        return this.trappes;
     }
 }
