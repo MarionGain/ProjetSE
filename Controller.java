@@ -5,40 +5,70 @@
 // c est le serveur qui fait bouger le robot
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
+import java.awt.Rectangle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class Controller {
-    private int dx;
-    private int dy;
+
     private Position p;
     private Robot robot;
-    private Projectile projectile;
-    private Board board;
+    private int dx;
+    private int dy;
+    private boolean descendre;
+    private boolean monter;
 
-    private int widthBoard = 1000;
-    private int heightBoard = 480;
-    
+    private Projectile projectile;
     private int projectileSpeed = 5;
-    private boolean visible;
     private int zoneDeTir= 250; 
-    private int directionTir=2; //1: gauche  2:droite
+    private int directionTir; //1: gauche  2:droite
     private int recupDirectionTir;// appele dans tir pour eviter que le projectile change de direction quand on bouge en meme temps le robot
 
+    private Monstre monstre;
+    private List<Monstre> monstres;
+    private int avanceeMonstre=0;
+
+    private Famille famille;
+    private int avanceeFamille=0;
+
+    private Etage etage;
+    private List<Etage> etages;
+    private Trappe trappe;
+    private List<Trappe> trappes;
+
+    private Board board;
+    private int widthBoard = 1000;
+    private int heightBoard = 480;
 
     public Controller(Board b){
+
         this.board = b;
         this.robot = b.getRobot();
-        p = new Position((b.getB_Width()/2)-20,24+ b.getB_Height()/4);
+        p = new Position((b.getB_Width()/2)-20, 5+b.getB_Height()/4);
         robot.setPositionOrigine(p);
         robot.setPosition(p);
+        this.descendre = robot.getPassage();
+        
         this.projectile = b.getProjectile();
+        this.directionTir = robot.getDirection();
+        this.monstre = b.getMonstre();
+        this.monstres = b.getListMonstres();
+        this.famille = b.getFamille();
+
+        this.etage = b.getEtage();
+        this.etages = b.getListEtages();
+        this.trappe = b.getTrappe();
+        this.trappes = b.getListTrappes();
+
     }
 
-    public void move(){
+    //mouvement du robot
+    public void moveRobot(){
 
         if(robot.getPosition().getY() <= 0 && dy<0){
             dy = 0;
         }
-
 
         if(robot.getPosition().getY() >= heightBoard-robot.getHeight() && dy > 0){
             dy = 0;
@@ -57,7 +87,69 @@ class Controller {
         robot.setPosition(p);
     }
 
-    //ajout 3
+    //verifier que le monstre est visible ou non
+    public void updateMonstre(){
+        for (int i = 0; i < monstres.size(); i++) {
+            Monstre m = monstres.get(i);           
+            if (m.isVisible() == false) {
+                monstres.remove(i);
+                System.out.println("monstre "+i+" tue");
+            }
+        }
+    }
+
+    //mouvement des monstres
+    public void moveMonstre(){
+        int i=0;
+        for(Monstre monstre : monstres){
+
+            if(monstres.get(i).getDirection()==1){
+                avanceeMonstre = -1;
+
+            }
+            if(monstres.get(i).getDirection()==2){
+                avanceeMonstre = 1;
+            }
+
+            p = new Position(monstres.get(i).getPosition().getX()+avanceeMonstre,monstres.get(i).getPosition().getY());
+
+            if(monstres.get(i).getPosition().getX() > widthBoard+monstres.get(i).getWidth()){
+                p.setX(0-monstres.get(i).getWidth());
+            }
+    
+            if(monstres.get(i).getPosition().getX() < 0-monstres.get(i).getWidth()){
+                p.setX(widthBoard+monstres.get(i).getWidth());
+            }
+
+            monstres.get(i).setPosition(p);
+            i++;
+        }
+    }
+
+    //deplacement famille
+    public void moveFamille(){
+        if(famille.getDirection()==1){
+            avanceeFamille = -1;
+        }
+
+        if(famille.getDirection()==2){
+            avanceeFamille = 1;
+        }
+
+        p = new Position(famille.getPosition().getX()+avanceeFamille, famille.getPosition().getY());
+
+        if(famille.getPosition().getX() > widthBoard+famille.getWidth()){
+            p.setX(0-famille.getWidth());
+        }
+
+        if(famille.getPosition().getX() < 0-famille.getWidth()){
+            p.setX(widthBoard+famille.getWidth());
+        }
+
+        famille.setPosition(p);
+
+    }
+
     public void tir(){
         if(projectile.isVisible() == false){
 
@@ -105,6 +197,101 @@ class Controller {
 
         projectile.setPosition(p);
     } 
+
+    //test de collision
+    public void testCollision(){
+
+
+        for(Monstre monstre : monstres){
+            Rectangle rRobot = robot.getBounds();
+            Rectangle rMonstre = monstre.getBounds();
+            if(rMonstre.intersects(rRobot)){
+                robot.setPosition(robot.getPositionOrigine());
+                robot.vieEnMoins();
+                System.out.println("collision robot monstre");
+            }
+        }
+
+        if(projectile.isVisible()==true){
+            Rectangle rProjectile = projectile.getBounds();
+            
+            for(Monstre monstre : monstres){
+                Rectangle rMonstre = monstre.getBounds();
+                if(rMonstre.intersects(rProjectile)){
+                    monstre.setVisible(false);
+                    projectile.setVisible(false);
+                    System.out.println("collision projectile monstre");
+                }
+            }
+        }
+
+        if(famille.isVisible()==true){
+            Rectangle rRobot = robot.getBounds();
+            Rectangle rFamille = famille.getBounds();
+            if(rRobot.intersects(rFamille)){
+                famille.setVisible(false);
+                System.out.println("collision robot famille");
+            }
+        }
+
+        
+        int i=0;
+        //tant qu on a pas mis correctement move du robot
+        for(Etage etage : etages){
+
+            Rectangle rRobot = robot.getBounds();
+            Rectangle rEtage = etage.getBounds();
+            //test collision avec etage pour que le robot n aille pas plus bas
+            //probleme car test l etage courant ce qui fait que le robot ne va pas vraiment jusqu en bas
+            if(rRobot.intersects(rEtage)){
+                dy=0;
+            }
+
+            if(etage.getListTrappes() != null){
+                for(Trappe trappe : etage.getListTrappes()){           
+                    Rectangle rTrappe = trappe.getBounds();
+ 
+                    //test collision entre robot et trappe + demande de passage trappe
+                    //if(rRobot.intersects(rTrappe) && (robot.getPassage() == true)){
+                    if(robot.getPassage() == true || monter == true){
+                        if(rRobot.intersects(rTrappe)){
+                            //Rectangle rEtageInf = etages.get(i+1).getBounds();
+                            System.out.println("descendre collision : "+descendre);
+                            trappe.setVisible(false);
+                            //ajouter une condition qui recupere si on va vers le haut ou vers le bas
+                            //dy=2; 
+                            if(robot.getPassage()==true) dy = 2;
+                            if(monter == true) dy = -2;
+                            // if(rRobot.intersects(rEtageInf)){
+                            //     dy = 0;
+                            // }
+                            for(Monstre monstre : monstres){
+                                Rectangle rMonstre = monstre.getBounds();
+                                if(rMonstre.intersects(rTrappe)){
+                                    if(monstre.getDirection()==1){
+                                        p = new Position(monstre.getPosition().getX()-avanceeMonstre,monstre.getPosition().getY());
+                                    }
+                                    if(monstre.getDirection()==2){
+                                        p = new Position(monstre.getPosition().getX()+avanceeMonstre,monstre.getPosition().getY());
+                                    }
+                                    monstre.setPosition(p);
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        trappe.setVisible(true);
+                        robot.setPassage(false);
+                        monter =false;
+                    }
+
+                }
+            }
+        }
+
+        i++;
+
+    }
     
     //quand on appuie sur une fleche ou espace
     public void keyPressed(KeyEvent e) {
@@ -114,22 +301,34 @@ class Controller {
 
         if (key == KeyEvent.VK_LEFT) {
             dx = -2;
+            robot.setDirection(1);
             directionTir = 1;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
             dx = 2;
+            robot.setDirection(2);
             directionTir = 2;
         }
 
         if (key == KeyEvent.VK_UP) {
             dy = -2;
+            monter =true;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 2;
+            dy = 0;
+            robot.setPassage(true);
+            // for(Etage etage : etages){
+            //     for(Trappe trappe : etage.getListTrappes()){
+            //         if(trappe.isVisible()==false){
+            //             dy = 2;
+            //         }
+            //     }
+            // }
+
         }
-        //ajout 1
+        
         if (key == KeyEvent.VK_SPACE) {
             tir();
         }
@@ -149,11 +348,13 @@ class Controller {
         }
 
         if (key == KeyEvent.VK_UP) {
-            dy = 0;
+            dy = 2;
+            monter = false;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 0;
+            dy =0;
+            robot.setPassage(false);
         }
     }
 
