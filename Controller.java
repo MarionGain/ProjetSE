@@ -17,6 +17,7 @@ class Controller {
     private int dx;
     private int dy;
     private boolean descendre;
+    private boolean monter;
 
     private Projectile projectile;
     private int projectileSpeed = 5;
@@ -251,11 +252,16 @@ class Controller {
                     Rectangle rTrappe = trappe.getBounds();
  
                     //test collision entre robot et trappe + demande de passage trappe
-                    if(rRobot.intersects(rTrappe) && (robot.getPassage() == true)){
+                    //if(rRobot.intersects(rTrappe) && (robot.getPassage() == true)){
+                    if(robot.getPassage() == true || monter == true){
+                        if(rRobot.intersects(rTrappe)){
                             //Rectangle rEtageInf = etages.get(i+1).getBounds();
                             System.out.println("descendre collision : "+descendre);
                             trappe.setVisible(false);
-                            //dy = 2;
+                            //ajouter une condition qui recupere si on va vers le haut ou vers le bas
+                            //dy=2; 
+                            if(robot.getPassage()==true) dy = 2;
+                            if(monter == true) dy = -2;
                             // if(rRobot.intersects(rEtageInf)){
                             //     dy = 0;
                             // }
@@ -271,10 +277,12 @@ class Controller {
                                     monstre.setPosition(p);
                                 }
                             }
+                        }
                     }
                     else{
                         trappe.setVisible(true);
-                        descendre = false;
+                        robot.setPassage(false);
+                        monter =false;
                     }
 
                 }
@@ -305,7 +313,7 @@ class Controller {
 
         if (key == KeyEvent.VK_UP) {
             dy = -2;
-            robot.setPassage(true);
+            monter =true;
         }
 
         if (key == KeyEvent.VK_DOWN) {
@@ -341,7 +349,7 @@ class Controller {
 
         if (key == KeyEvent.VK_UP) {
             dy = 2;
-            robot.setPassage(false);
+            monter = false;
         }
 
         if (key == KeyEvent.VK_DOWN) {
