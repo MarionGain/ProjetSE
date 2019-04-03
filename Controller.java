@@ -201,6 +201,8 @@ class Controller {
     //test de collision
     public void testCollision(){
 
+        //a essayer: ne tester la collision que si le robot est visible 
+        //implique d avoir un attribut 
         for(Monstre monstre : monstres){
             Rectangle rRobot = robot.getBounds();
             Rectangle rMonstre = monstre.getBounds();
@@ -242,51 +244,67 @@ class Controller {
         for(Etage etage : etages){
 
             Rectangle rRobot = robot.getBounds();
+            Rectangle rRobotTete = robot.getBoundsTete();
+            Rectangle rRobotPieds = robot.getBoundsPieds();
             Rectangle rEtage = etage.getBounds();
+            
             //test collision avec etage pour que le robot n aille pas plus bas
-            //probleme car test l etage courant ce qui fait que le robot ne va pas vraiment jusqu en bas
-            if(rRobot.intersects(rEtage)){
+            if(rRobot.intersects(rEtage)  && rRobotPieds.intersects(rEtage) && dy>0){
+                dy=0;
+            }
+            //test collision avec etage pour que le robot n aille pas plus haut que le plafond
+            else if(rRobot.intersects(rEtage) && !rRobotPieds.intersects(rEtage) && dy<0){
                 dy=0;
             }
 
             if(etage.getListTrappes() != null){
                 for(Trappe trappe : etage.getListTrappes()){           
                     Rectangle rTrappe = trappe.getBounds();
- 
-                    //test collision entre robot et trappe + demande de passage trappe
-                    //if(rRobot.intersects(rTrappe) && (robot.getPassage() == true)){
-                    if(robot.getPassage() == true || monter == true){
-                        if(rRobot.intersects(rTrappe)){
-                            //Rectangle rEtageInf = etages.get(i+1).getBounds();
-                            System.out.println("descendre collision : "+descendre);
+                    
+                    //collision horizontale trappe robot
+                    if(trappe.isVisible()){
+                        if(rRobotTete.intersects(rTrappe) && monter==true){
                             trappe.setVisible(false);
-                            //ajouter une condition qui recupere si on va vers le haut ou vers le bas
-                            //dy=2; 
-                            if(robot.getPassage()==true) dy = 2;
-                            if(monter == true) dy = -2;
-                            // if(rRobot.intersects(rEtageInf)){
-                            //     dy = 0;
-                            // }
-                            for(Monstre monstre : monstres){
-                                Rectangle rMonstre = monstre.getBounds();
-                                if(rMonstre.intersects(rTrappe)){
-                                    if(monstre.getDirection()==1){
-                                        p = new Position(monstre.getPosition().getX()-avanceeMonstre,monstre.getPosition().getY());
-                                    }
-                                    if(monstre.getDirection()==2){
-                                        p = new Position(monstre.getPosition().getX()+avanceeMonstre,monstre.getPosition().getY());
-                                    }
-                                    monstre.setPosition(p);
-                                }
-                            }
+                        }
+                        if(rRobotPieds.intersects(rTrappe) && robot.getPassage()==true){
+                            trappe.setVisible(false);
                         }
                     }
                     else{
-                        trappe.setVisible(true);
-                        robot.setPassage(false);
-                        monter =false;
-                    }
+                        //collision laterale trappe robot
+                        Rectangle rLeftTrappe = trappe.getBoundsLeft();
+                        Rectangle rRightTrappe = trappe.getBoundsRight();
+                        if(rRobot.intersects(rLeftTrappe) && dx<0 ){                             
+                            dx=0;
+                            System.out.println("collision cote gauche trappe");
+                        }
+                        if(rRobot.intersects(rRightTrappe) && dx>0){
+                            dx=0;
+                            System.out.println("collision cote droite trappe");
+                        }
 
+                        //mouvement vertical robot
+                        if(monter == true) dy = -2;
+                        else dy=2;
+
+                        //test collision monstre trappe
+                        for(Monstre monstre : monstres){
+                            Rectangle rMonstre = monstre.getBounds();
+                            if(rMonstre.intersects(rTrappe)){
+                                if(monstre.getDirection()==1){
+                                    p = new Position(monstre.getPosition().getX()-avanceeMonstre,monstre.getPosition().getY());
+                                }
+                                if(monstre.getDirection()==2){
+                                    p = new Position(monstre.getPosition().getX()+avanceeMonstre,monstre.getPosition().getY());
+                                }
+                                monstre.setPosition(p);
+                            }
+                        }
+
+                        if(!rRobot.intersects(rTrappe)){
+                            trappe.setVisible(true);
+                        }
+                    }
                 }
             }
         }
@@ -319,7 +337,6 @@ class Controller {
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 0;
             robot.setPassage(true);
             // for(Etage etage : etages){
             //     for(Trappe trappe : etage.getListTrappes()){
@@ -355,7 +372,6 @@ class Controller {
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy =0;
             robot.setPassage(false);
         }
     }

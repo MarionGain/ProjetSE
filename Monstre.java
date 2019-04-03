@@ -68,7 +68,7 @@ class Monstre{
     //+12/-12 : pour eviter que le robot disparaisse avant d avoir touche visuellement le monstre
     //dimension monstre : 50*50
     public Rectangle getBounds() {
-        return new Rectangle(this.getPosition().getX()+18, this.getPosition().getY()+15, this.getWidth()-22, this.getHeight()-10);
+        return new Rectangle(this.getPosition().getX()+20, this.getPosition().getY()+5, this.getWidth()-40, this.getHeight());
     }
     
 }

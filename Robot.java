@@ -101,7 +101,15 @@ class Robot{
     //ajout ou retrait de pixel : pour eviter que le robot ne disparaisse avant qu il ne touche le monstre visuellement
     //dimension robot : 58*84
     public Rectangle getBounds() {
-        return new Rectangle(this.getPosition().getX()+30, this.getPosition().getY()+5, this.getWidth()-18, this.getHeight()-16);
+        return new Rectangle(this.getPosition().getX(), this.getPosition().getY()+10, this.getWidth(), this.getHeight()-20);
+    }
+
+    public Rectangle getBoundsTete(){
+        return new Rectangle(this.getPosition().getX(), this.getPosition().getY()+5, this.getWidth(),5);
+    }
+
+    public Rectangle getBoundsPieds(){
+        return new Rectangle(this.getPosition().getX(),this.getPosition().getY()+this.getHeight()-5,this.getWidth(),15);
     }
     
 }

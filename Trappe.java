@@ -44,4 +44,12 @@ class Trappe{
     public Rectangle getBounds(){
         return new Rectangle(this.getPosition().getX(), this.getPosition().getY(), this.getWidth(), this.getHeight());
     }
+
+    public Rectangle getBoundsLeft(){
+        return new Rectangle(this.getPosition().getX()-30,this.getPosition().getY(),30,this.getHeight());
+    }
+
+    public Rectangle getBoundsRight(){
+        return new Rectangle(this.getPosition().getX()+this.getWidth(),this.getPosition().getY(),30,this.getHeight());
+    }
 }

@@ -277,12 +277,12 @@ class Board extends JPanel implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent evt){
+        control.testCollision();
         control.moveRobot();
         control.moveMonstre();
         control.updateMonstre();
         control.updateProjectile();
         control.moveFamille();
-        control.testCollision();
         
         repaint();
     }
