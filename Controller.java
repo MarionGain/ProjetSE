@@ -201,15 +201,17 @@ class Controller {
     //test de collision
     public void testCollision(){
 
-
         for(Monstre monstre : monstres){
             Rectangle rRobot = robot.getBounds();
             Rectangle rMonstre = monstre.getBounds();
-            if(rMonstre.intersects(rRobot)){
-                robot.setPosition(robot.getPositionOrigine());
-                robot.vieEnMoins();
-                System.out.println("collision robot monstre");
-            }
+                //condition bonne , probleme a l air de venir peut être de la dimension du robot
+                if(rMonstre.intersects(rRobot) && robot.getPosition()!=robot.getPositionOrigine()){
+                    robot.setPosition(robot.getPositionOrigine());
+                    robot.vieEnMoins();
+                    System.out.println("collision robot monstre");
+                } 
+            
+            
         }
 
         if(projectile.isVisible()==true){

@@ -65,9 +65,10 @@ class Monstre{
 
     //Ajout
     //retourne les "limitations" du rectangle de l image, necessaire pour la collision
+    //+12/-12 : pour eviter que le robot disparaisse avant d avoir touche visuellement le monstre
+    //dimension monstre : 50*50
     public Rectangle getBounds() {
-        //+12/-12 : pour eviter que le robot disparaisse avant d avoir touche visuellement le monstre
-        return new Rectangle(this.getPosition().getX()+18, this.getPosition().getY(), this.getWidth()-15, this.getHeight());
+        return new Rectangle(this.getPosition().getX()+18, this.getPosition().getY()+15, this.getWidth()-22, this.getHeight()-10);
     }
     
 }
