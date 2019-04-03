@@ -21,7 +21,7 @@ import java.util.List;
 
 
 //ajout1 de la methode tirer appelant tir()
-
+// recupérer de Dorine
 
 class Board extends JPanel implements ActionListener{
 
@@ -266,4 +266,6 @@ class Board extends JPanel implements ActionListener{
     public List<Monstre> getListMonstres(){
         return this.monstres;
     }
+
+
 }

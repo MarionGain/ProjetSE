@@ -8,6 +8,11 @@ class Robot{
     private Image imRobot;
     private ImageIcon i;
     private int nbVies = 3;
+    
+
+    // Dorine ne les a pas 
+    private Score score;
+    private String nom;
 
     private boolean visible;
     private int x;
@@ -18,6 +23,8 @@ class Robot{
         loadImage();
         posOrigine = new Position(0,0);
         posCourante = new Position(0,0);
+        this.score = new Score();
+        this.nom = "";
     }
 
     public void loadImage(){
@@ -67,6 +74,20 @@ class Robot{
 
     public void vieEnMoins(){
         this.nbVies --;
+    }
+
+    // Dorine ne les a pas 
+
+    public Score getScore(){
+        return this.score;
+    }
+
+    public String getNom(){
+        return this.nom;
+    }
+
+    public void setNom(String nom){
+        this.nom = nom;
     }
 
     //retourne les "limitations" du rectangle de l image necessaire pour la collision

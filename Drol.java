@@ -1,5 +1,7 @@
 import javax.swing.JFrame;
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Drol extends JFrame{
 
@@ -17,6 +19,14 @@ public class Drol extends JFrame{
         pack();
 
         this.setTitle("DROL");
+        this.addWindowListener(new WindowAdapter()){
+            public void windowClosing(WindowEvent e){
+                    // ajouter saveScore
+            }
+        });
+
+
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -31,9 +41,13 @@ public class Drol extends JFrame{
 
         Partie partie = new Partie(drol.getBoard()); // ajouter board 
 
-        // partie.creationServeur();
+        // // partie.creationServeur();
         partie.menu();
         System.out.println("bla");
+        // drol.getBoard().getRobot().setNom("Marion");
+        drol.getBoard().getRobot().getScore().ajoutMonstre(10);
+        drol.getBoard().getRobot().getScore().saveScore(drol.getBoard().getRobot().getNom());
+        //drol.getBoard().getRobot().getScore().saveScore();
         // partie.creationClient();
         // partie.rejoindrePartie();
     }

@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 class Partie {
@@ -70,6 +69,9 @@ class Partie {
 	// 	this.robotCourant = robot;
 	// }
 
+	private Board getBoard(){
+		return this.board;
+	}
 	private boolean getQuitter(){
 		return this.quitter;
 	}
@@ -132,9 +134,13 @@ class Partie {
 		System.out.println("Veuillez saisir l'adresse ip indiquée sur la machine de l'hôte"); // a modifier 
 		Scanner sc = new Scanner(System.in); 
 		String ip = sc.nextLine();
-		
+		System.out.println("Veuillez saisir un pseudo : ");
+		String nom = sc.nextLine();
+		this.getBoard().getRobot().setNom(nom);
 		Thread tc = new Thread(new Client(2000,ip,board));
 		tc.start();
+
+		
 
 	}
 
