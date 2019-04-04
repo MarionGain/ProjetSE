@@ -304,9 +304,8 @@ class Controller {
                 }
             }
         }
-
+        
         i++;
-
     }
     
     //quand on appuie sur une fleche ou espace
