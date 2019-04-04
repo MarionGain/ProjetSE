@@ -21,16 +21,16 @@ class Controller {
 
     private Projectile projectile;
     private int projectileSpeed = 5;
-    private int zoneDeTir= 250; 
+    private int zoneDeTir = 250; 
     private int directionTir; //1: gauche  2:droite
     private int recupDirectionTir;// appele dans tir pour eviter que le projectile change de direction quand on bouge en meme temps le robot
 
     private Monstre monstre;
     private List<Monstre> monstres;
-    private int avanceeMonstre=0;
+    private int avanceeMonstre = 0;
 
     private Famille famille;
-    private int avanceeFamille=0;
+    private int avanceeFamille = 0;
 
     private Etage etage;
     private List<Etage> etages;
@@ -66,22 +66,22 @@ class Controller {
     //mouvement du robot
     public void moveRobot(){
 
-        if(robot.getPosition().getY() <= 0 && dy<0){
+        if(robot.getPosition().getY() <= 0 && dy < 0){
             dy = 0;
         }
 
-        if(robot.getPosition().getY() >= heightBoard-robot.getHeight() && dy > 0){
+        if(robot.getPosition().getY() >= heightBoard - robot.getHeight() && dy > 0){
             dy = 0;
         }
 
-        p = new Position(robot.getPosition().getX()+dx,robot.getPosition().getY()+dy);
+        p = new Position(robot.getPosition().getX() + dx,robot.getPosition().getY() + dy);
 
-        if(robot.getPosition().getX() > widthBoard+robot.getWidth()){
-            p.setX(0-robot.getWidth());
+        if(robot.getPosition().getX() > widthBoard + robot.getWidth()){
+            p.setX(0 - robot.getWidth());
         }
 
-        if(robot.getPosition().getX() < 0-robot.getWidth()){
-            p.setX(widthBoard+robot.getWidth());
+        if(robot.getPosition().getX() < 0 - robot.getWidth()){
+            p.setX(widthBoard + robot.getWidth());
         }
 
         robot.setPosition(p);
@@ -93,31 +93,31 @@ class Controller {
             Monstre m = monstres.get(i);           
             if (m.isVisible() == false) {
                 monstres.remove(i);
-                System.out.println("monstre "+i+" tue");
+                System.out.println("monstre " + i + " tue");
             }
         }
     }
 
     //mouvement des monstres
     public void moveMonstre(){
-        int i=0;
+        int i = 0;
         for(Monstre monstre : monstres){
 
-            if(monstres.get(i).getDirection()==1){
+            if(monstres.get(i).getDirection() == 1){
                 avanceeMonstre = -1;
 
             }
-            if(monstres.get(i).getDirection()==2){
+            if(monstres.get(i).getDirection() == 2){
                 avanceeMonstre = 1;
             }
 
-            p = new Position(monstres.get(i).getPosition().getX()+avanceeMonstre,monstres.get(i).getPosition().getY());
+            p = new Position(monstres.get(i).getPosition().getX() + avanceeMonstre,monstres.get(i).getPosition().getY());
 
-            if(monstres.get(i).getPosition().getX() > widthBoard+monstres.get(i).getWidth()){
-                p.setX(0-monstres.get(i).getWidth());
+            if(monstres.get(i).getPosition().getX() > widthBoard + monstres.get(i).getWidth()){
+                p.setX(0 - monstres.get(i).getWidth());
             }
     
-            if(monstres.get(i).getPosition().getX() < 0-monstres.get(i).getWidth()){
+            if(monstres.get(i).getPosition().getX() < 0 - monstres.get(i).getWidth()){
                 p.setX(widthBoard+monstres.get(i).getWidth());
             }
 
@@ -128,22 +128,22 @@ class Controller {
 
     //deplacement famille
     public void moveFamille(){
-        if(famille.getDirection()==1){
+        if(famille.getDirection() == 1){
             avanceeFamille = -1;
         }
 
-        if(famille.getDirection()==2){
+        if(famille.getDirection() == 2){
             avanceeFamille = 1;
         }
 
-        p = new Position(famille.getPosition().getX()+avanceeFamille, famille.getPosition().getY());
+        p = new Position(famille.getPosition().getX() + avanceeFamille, famille.getPosition().getY());
 
-        if(famille.getPosition().getX() > widthBoard+famille.getWidth()){
-            p.setX(0-famille.getWidth());
+        if(famille.getPosition().getX() > widthBoard + famille.getWidth()){
+            p.setX(0 - famille.getWidth());
         }
 
-        if(famille.getPosition().getX() < 0-famille.getWidth()){
-            p.setX(widthBoard+famille.getWidth());
+        if(famille.getPosition().getX() < 0 - famille.getWidth()){
+            p.setX(widthBoard + famille.getWidth());
         }
 
         famille.setPosition(p);
@@ -154,14 +154,14 @@ class Controller {
         if(projectile.isVisible() == false){
 
             if(directionTir == 2){
-                recupDirectionTir=2;
+                recupDirectionTir = 2;
             }
 
             if(directionTir == 1){
-                recupDirectionTir=1;
+                recupDirectionTir = 1;
             }
 
-            Position pos = new Position(robot.getPosition().getX(),robot.getPosition().getY()+(robot.getHeight()/2));
+            Position pos = new Position(robot.getPosition().getX(),robot.getPosition().getY() + (robot.getHeight()/2));
             projectile.setPositionOrigine(pos);
             projectile.setPosition(pos);
             projectile.setVisible(true);
@@ -174,9 +174,9 @@ class Controller {
         //quand joueur tir vers la gauche
         if(recupDirectionTir == 1){
             if (projectile.isVisible()) {
-                p = new Position(projectile.getPosition().getX()-projectileSpeed,projectile.getPosition().getY());
+                p = new Position(projectile.getPosition().getX() - projectileSpeed,projectile.getPosition().getY());
                 
-                if (projectile.getPosition().getX() <  projectile.getPositionOrigine().getX()-zoneDeTir) {
+                if (projectile.getPosition().getX() <  projectile.getPositionOrigine().getX() - zoneDeTir) {
                     projectile.setVisible(false);
                 }
 
@@ -186,9 +186,9 @@ class Controller {
         //quand joueur tir vers la droite
         if(recupDirectionTir == 2){
             if (projectile.isVisible()) {
-                p = new Position(projectile.getPosition().getX()+projectileSpeed,projectile.getPosition().getY());
+                p = new Position(projectile.getPosition().getX() + projectileSpeed,projectile.getPosition().getY());
                 
-                if (projectile.getPosition().getX() > projectile.getPositionOrigine().getX()+zoneDeTir) {
+                if (projectile.getPosition().getX() > projectile.getPositionOrigine().getX() + zoneDeTir) {
                     projectile.setVisible(false);
                 }
 
@@ -200,19 +200,20 @@ class Controller {
 
     //test de collision
     public void testCollision(){
-
-
+        //a essayer: ne tester la collision que si le robot est visible 
+        //implique d avoir un attribut 
         for(Monstre monstre : monstres){
             Rectangle rRobot = robot.getBounds();
             Rectangle rMonstre = monstre.getBounds();
-            if(rMonstre.intersects(rRobot)){
-                robot.setPosition(robot.getPositionOrigine());
-                robot.vieEnMoins();
-                System.out.println("collision robot monstre");
-            }
+                //condition bonne , probleme a l air de venir peut être de la dimension du robot
+                if(rMonstre.intersects(rRobot) && robot.getPosition() != robot.getPositionOrigine()){
+                    robot.setPosition(robot.getPositionOrigine());
+                    robot.vieEnMoins();
+                    System.out.println("collision robot monstre");
+                } 
         }
 
-        if(projectile.isVisible()==true){
+        if(projectile.isVisible() == true){
             Rectangle rProjectile = projectile.getBounds();
             
             for(Monstre monstre : monstres){
@@ -225,7 +226,7 @@ class Controller {
             }
         }
 
-        if(famille.isVisible()==true){
+        if(famille.isVisible() == true){
             Rectangle rRobot = robot.getBounds();
             Rectangle rFamille = famille.getBounds();
             if(rRobot.intersects(rFamille)){
@@ -234,57 +235,72 @@ class Controller {
             }
         }
 
-        
-        int i=0;
+        int i = 0;
         //tant qu on a pas mis correctement move du robot
         for(Etage etage : etages){
 
             Rectangle rRobot = robot.getBounds();
+            Rectangle rRobotTete = robot.getBoundsTete();
+            Rectangle rRobotPieds = robot.getBoundsPieds();
             Rectangle rEtage = etage.getBounds();
+            
             //test collision avec etage pour que le robot n aille pas plus bas
-            //probleme car test l etage courant ce qui fait que le robot ne va pas vraiment jusqu en bas
-            if(rRobot.intersects(rEtage)){
-                dy=0;
+            if(rRobot.intersects(rEtage) && rRobotPieds.intersects(rEtage) && dy > 0){
+                dy = 0;
+            }
+            //test collision avec etage pour que le robot n aille pas plus haut que le plafond
+            else if(rRobot.intersects(rEtage) && !rRobotPieds.intersects(rEtage) && dy < 0){
+                dy = 0;
             }
 
             if(etage.getListTrappes() != null){
                 for(Trappe trappe : etage.getListTrappes()){           
                     Rectangle rTrappe = trappe.getBounds();
- 
-                    //test collision entre robot et trappe + demande de passage trappe
-                    //if(rRobot.intersects(rTrappe) && (robot.getPassage() == true)){
-                    if(robot.getPassage() == true || monter == true){
-                        if(rRobot.intersects(rTrappe)){
-                            //Rectangle rEtageInf = etages.get(i+1).getBounds();
-                            System.out.println("descendre collision : "+descendre);
+
+                    //collision horizontale trappe robot
+                    if(trappe.isVisible()){
+                        if(rRobotTete.intersects(rTrappe) && monter == true){
                             trappe.setVisible(false);
-                            //ajouter une condition qui recupere si on va vers le haut ou vers le bas
-                            //dy=2; 
-                            if(robot.getPassage()==true) dy = 2;
-                            if(monter == true) dy = -2;
-                            // if(rRobot.intersects(rEtageInf)){
-                            //     dy = 0;
-                            // }
-                            for(Monstre monstre : monstres){
-                                Rectangle rMonstre = monstre.getBounds();
-                                if(rMonstre.intersects(rTrappe)){
-                                    if(monstre.getDirection()==1){
-                                        p = new Position(monstre.getPosition().getX()-avanceeMonstre,monstre.getPosition().getY());
-                                    }
-                                    if(monstre.getDirection()==2){
-                                        p = new Position(monstre.getPosition().getX()+avanceeMonstre,monstre.getPosition().getY());
-                                    }
-                                    monstre.setPosition(p);
-                                }
-                            }
+                        }
+                        if(rRobotPieds.intersects(rTrappe) && robot.getPassage() == true){
+                            trappe.setVisible(false);
                         }
                     }
                     else{
-                        trappe.setVisible(true);
-                        robot.setPassage(false);
-                        monter =false;
-                    }
+                        //collision laterale trappe robot
+                        Rectangle rLeftTrappe = trappe.getBoundsLeft();
+                        Rectangle rRightTrappe = trappe.getBoundsRight();
+                        if(rRobot.intersects(rLeftTrappe) && dx < 0 ){                             
+                            dx = 0;
+                            System.out.println("collision cote gauche trappe");
+                        }
+                        if(rRobot.intersects(rRightTrappe) && dx > 0){
+                            dx = 0;
+                            System.out.println("collision cote droite trappe");
+                        }
 
+                        //mouvement vertical robot
+                        if(monter == true) dy = -2;
+                        else dy = 2;
+
+                        //test collision monstre trappe
+                        for(Monstre monstre : monstres){
+                            Rectangle rMonstre = monstre.getBounds();
+                            if(rMonstre.intersects(rTrappe)){
+                                if(monstre.getDirection() == 1){
+                                    p = new Position(monstre.getPosition().getX() - avanceeMonstre,monstre.getPosition().getY());
+                                }
+                                if(monstre.getDirection() == 2){
+                                    p = new Position(monstre.getPosition().getX() + avanceeMonstre,monstre.getPosition().getY());
+                                }
+                                monstre.setPosition(p);
+                            }
+                        }
+
+                        if(!rRobot.intersects(rTrappe)){
+                            trappe.setVisible(true);
+                        }
+                    }
                 }
             }
         }
@@ -313,11 +329,10 @@ class Controller {
 
         if (key == KeyEvent.VK_UP) {
             dy = -2;
-            monter =true;
+            monter = true;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy = 0;
             robot.setPassage(true);
             // for(Etage etage : etages){
             //     for(Trappe trappe : etage.getListTrappes()){
@@ -353,10 +368,7 @@ class Controller {
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dy =0;
             robot.setPassage(false);
         }
     }
-
-
 }
