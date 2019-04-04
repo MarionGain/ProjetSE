@@ -5,7 +5,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.awt.Rectangle;
 
-class Robot extends Personnage{
+// extends Personnage
+class Robot {
 
     private Position posOrigine;
     private Position posCourante;

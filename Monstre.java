@@ -2,7 +2,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.awt.Rectangle;
 
-class Monstre extends Personnage{
+// extends Personnage
+class Monstre {
     private Position posOrigine;
     private Position posCourante;
     private Image imMonstre;

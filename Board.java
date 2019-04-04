@@ -151,9 +151,9 @@ class Board extends JPanel implements ActionListener{
         trappes3.add(new Trappe());
 
         //creation des etage
-        etages.add(new Etage((trappes1,B_Height-9) * (B_Height/16)-10));
-        etages.add(new Etage((trappes2,B_Height-6)* (B_Height/16)-10));
-        etages.add(new Etage((trappes3,B_Height-3) * (B_Height/16)-10));
+        etages.add(new Etage(trappes1,B_Height-9 * (B_Height/16)-10));
+        etages.add(new Etage(trappes2,B_Height-6* (B_Height/16)-10));
+        etages.add(new Etage(trappes3,B_Height-3 * (B_Height/16)-10));
         etages.add(new Etage(B_Height-10));
 
         //attribution des positions aux trappes
