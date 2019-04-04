@@ -221,7 +221,7 @@ class Controller {
                 if(rMonstre.intersects(rProjectile)){
                     monstre.setVisible(false);
                     projectile.setVisible(false);
-                    System.out.println("collision projectile monstre");
+                    // System.out.println("collision projectile monstre");
                 }
             }
         }

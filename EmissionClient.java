@@ -1,37 +1,36 @@
 import java.io.*;
-import java.net.*;
 import java.util.Scanner;
 
-class EmissionServeur implements Runnable{
+class EmissionClient implements Runnable{
 
 	private PrintWriter out;
 	private Scanner sc;
 	private String message = null;
+	private Controller controller;
 
-	public EmissionServeur(PrintWriter out){
+	public EmissionClient(PrintWriter out, Controller c){
 		this.out = out;
+		this.controller = c;
 	}
 
 	public void run(){
 
 	sc = new Scanner(System.in);
 		
-		while(true){
-
-			// System.out.println("Serveur votre message : ");
+		while(true){ 
+			// try {
+   //          Thread.currentThread().sleep(2000);
+   //       } catch (InterruptedException e) {
+   //          e.printStackTrace();
+   //       }
+			
+			System.out.println("Client votre message : ");
 			// try{
 			// 	Thread.sleep(20);
 			// }
 			// catch(InterruptedException e){
 			// 	e.printStackTrace();
 			// }
-			try {
-            Thread.currentThread().sleep(3000);
-         } catch (InterruptedException e) {
-            e.printStackTrace();
-         }
-
-			System.out.println("Serveur votre message :");
 			//out.flush();
 			message = sc.nextLine();
 			//int test = 10;

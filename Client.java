@@ -1,15 +1,25 @@
 import java.io.*;
 import java.net.*;
 
-class Client{
+public class Client implements Runnable{
 
-	public static Socket socket = null;
-	public static Thread t1;
+	private Socket socket;
+	private Thread t1;
+	private Board board;
+	// private PrintWriter out = null;
+	// private BufferedReader in = null; 
+	// int port = 80;
+	// private String ip = "192.168.1.20";
 
-	public Client(int port, InetAddress ip){
+	public Client(int port, String ip, Board b){
+		
+			this.board = b;
+
 		try{
-			socket = new Socket(ip,port); 
-			t1 = new Thread(new GestionDonneesClient(socket));
+
+			this.socket = new Socket(ip,port); 
+			// this.out = new PrintWriter(socket.getOutputStream());
+			// this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		}
 
 		catch(UnknownHostException e){
@@ -23,8 +33,16 @@ class Client{
 		
 	}
 
-	public void lancerClient(){
+	public void run(){
+ 		t1 = new Thread(new GestionDonneesClient(socket, board));
+ 		// try{
+ 		// 	System.out.println(in.readLine());
+ 		// }
+ 		// catch(IOException e){
+ 		// 	e.printStackTrace();
+ 		// }
 		System.out.println("Le client est connecté");
+
 		t1.start();
 	}
 }

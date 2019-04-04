@@ -13,7 +13,13 @@ class Robot {
     private Image imRobot;
     private ImageIcon i;
     private int nbVies = 3;
-    private boolean passage;
+
+    private boolean passage;   
+
+    // Dorine ne les a pas 
+    private Score score;
+    private String nom;
+
     private boolean visible;
     private int x;
     private int y;
@@ -26,6 +32,9 @@ class Robot {
         posCourante = new Position(0,0);
         passage = false;
         direction = 2;
+
+        this.score = new Score();
+        this.nom = "";
     }
 
     public void loadImage(){
@@ -86,6 +95,7 @@ class Robot {
         this.nbVies --;
     }
 
+
     public boolean getPassage(){
         return this.passage;
     }
@@ -100,6 +110,19 @@ class Robot {
 
     public void setDirection(int d){
         this.direction = d;
+
+    // Dorine ne les a pas 
+
+    public Score getScore(){
+        return this.score;
+    }
+
+    public String getNom(){
+        return this.nom;
+    }
+
+    public void setNom(String nom){
+        this.nom = nom;
     }
 
     //retourne les "limitations" du rectangle de l image necessaire pour la collision

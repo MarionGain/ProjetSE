@@ -1,9 +1,13 @@
 import java.io.*;
 import java.net.*;
 
-class AccepterConnexion implements Runnable{
+class AccepterConnexion extends Thread{
+
+	private int nbClient = 1;	
 	private ServerSocket ss;
-	private Socket socket = null;
+	// private PrintWriter out = null;
+	// private BufferedReader in = null; 
+
 
 	public Thread t1; 
 
@@ -11,12 +15,43 @@ class AccepterConnexion implements Runnable{
 		this.ss = ss;
 	}
 
+
+
+// public void run()
+// 	{
+// 		//Tant qu'il est ouvert
+// 		while(true)
+// 		{
+// 			try 
+// 			{
+// 				// if(serveur.restePlace() )
+// 				// {
+// 				System.out.println("Client connecté");
+// 				Socket socket = ss.accept();
+// 				serveur.ajoutClient(socket);
+					
+// 				// }
+// 			} 
+// 			catch (IOException e)
+// 			{
+// 				e.printStackTrace();
+// 			}
+// 		}
+// 		//
+// 	}
+	
 	public void run (){
 		
 		try{
 			while(true){
-				socket = ss.accept();
-				System.out.println("Un client se connecte");
+				Socket socket = ss.accept();
+				System.out.println("Le client n° " + nbClient + " se connecte");
+				nbClient++;
+				t1 = new Thread(new GestionDonneesServeur(socket));
+				// this.out = new PrintWriter(socket.getOutputStream());
+				// this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				// System.out.println(in.readLine());
+			
 				// truc à rajouter
 				t1.start();
 			}
@@ -25,4 +60,5 @@ class AccepterConnexion implements Runnable{
 			System.err.println("Erreur serveur");
 		}
 	}
+	
 }
