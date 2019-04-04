@@ -110,7 +110,7 @@ class Robot {
 
     public void setDirection(int d){
         this.direction = d;
-
+    }
     // Dorine ne les a pas 
 
     public Score getScore(){
