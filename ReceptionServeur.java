@@ -4,9 +4,11 @@ class ReceptionServeur implements Runnable {
 	// private String login =null; ???????
 	private BufferedReader in; 
 	private String message = null;
+	private Controller controller;
 
-	public ReceptionServeur(BufferedReader in){ //paramètres String login 
+	public ReceptionServeur(BufferedReader in, Controller c){ //paramètres String login 
 		this.in = in;
+		this.controller = c;
 		// this.login = login;
 	}
 
@@ -18,8 +20,11 @@ class ReceptionServeur implements Runnable {
 				// int i = 10;
 				// System.out.println(i);
 				// System.out.println("Bien recu");
-				if(message != null)
-				System.out.println("Le client dit "+message);
+				if(message != null){
+					System.out.println("Le client dit " + message);
+					this.controller.conversionStringDonnees(message);
+				}
+
 				// out.flush();	
 			}
 			catch(IOException e){

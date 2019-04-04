@@ -7,9 +7,11 @@ class EmissionServeur implements Runnable{
 	private PrintWriter out;
 	private Scanner sc;
 	private String message = null;
+	private Controller controller;
 
-	public EmissionServeur(PrintWriter out){
+	public EmissionServeur(PrintWriter out, Controller c){
 		this.out = out;
+		this.controller = c;
 	}
 
 	public void run(){
@@ -17,7 +19,6 @@ class EmissionServeur implements Runnable{
 	sc = new Scanner(System.in);
 		
 		while(true){
-
 			// System.out.println("Serveur votre message : ");
 			// try{
 			// 	Thread.sleep(20);
@@ -26,17 +27,22 @@ class EmissionServeur implements Runnable{
 			// 	e.printStackTrace();
 			// }
 			try {
-            Thread.currentThread().sleep(3000);
-         } catch (InterruptedException e) {
-            e.printStackTrace();
-         }
+	        	Thread.currentThread().sleep(3000);
+	     	} 
+	     	catch (InterruptedException e) {
+	        	e.printStackTrace();
+	     	}
 
-			System.out.println("Serveur votre message :");
-			//out.flush();
-			message = sc.nextLine();
-			//int test = 10;
-			out.println(message);
-			out.flush();
+	     	message = this.controller.conversionDonneesString();
+         	if(message != null){
+
+				//int test = 10;
+				out.println(message);
+				out.flush();
+         	}
+			// System.out.println("Serveur votre message :");
+			// //out.flush();
+			// 	message = sc.nextLine();
 		}
 	}
 }

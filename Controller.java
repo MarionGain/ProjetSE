@@ -371,4 +371,31 @@ class Controller {
             robot.setPassage(false);
         }
     }
+
+
+    public String conversionDonneesString(){
+        String s = null;
+        
+
+
+
+
+
+
+
+
+
+
+        return s;
+    }
+
+
+    public void conversionStringDonnees(String s){
+         
+        // if(s.)
+
+
+
+
+    }
 }

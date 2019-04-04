@@ -22,9 +22,12 @@ class ReceptionClient implements Runnable{
     //      }
 			try{
 				message = in.readLine();
-				if(message != null)
-				System.out.println("Le serveur dit "+message);
-
+				
+				
+				if(message != null){
+					System.out.println("Le serveur dit " + message);
+					this.controller.conversionStringDonnees(message);
+				}
 				// else {
 				// 	System.out.println("pas de message");
 				// }

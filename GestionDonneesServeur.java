@@ -7,11 +7,12 @@ class GestionDonneesServeur implements Runnable{
 	private PrintWriter out = null;
 	private BufferedReader in = null; 
 	private Thread emission, reception; 
+	private Controller controller;
 
-
-	public GestionDonneesServeur(Socket s){
+	public GestionDonneesServeur(Socket s, Board b){
 
 		this.socket = s;
+		this.controller = new Controller(b);
 	}
 
 	public void run(){
@@ -20,8 +21,8 @@ class GestionDonneesServeur implements Runnable{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			System.out.println("Dans GestionDonneesServeur");
 
-			emission = new Thread(new EmissionServeur(out));
-			reception = new Thread(new ReceptionServeur(in));
+			emission = new Thread(new EmissionServeur(out,controller));
+			reception = new Thread(new ReceptionServeur(in,controller));
 
 			emission.start();
 			reception.start();

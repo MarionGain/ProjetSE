@@ -23,19 +23,23 @@ class EmissionClient implements Runnable{
    //       } catch (InterruptedException e) {
    //          e.printStackTrace();
    //       }
+			message = this.controller.conversionDonneesString();
+
+			if(message != null){
+				System.out.println("Client votre message : ");
+				// try{
+				// 	Thread.sleep(20);
+				// }
+				// catch(InterruptedException e){
+				// 	e.printStackTrace();
+				// }
+				//out.flush();
+				//message = sc.nextLine();
+				//int test = 10;
+				out.println(message);
+				out.flush();
+			}
 			
-			System.out.println("Client votre message : ");
-			// try{
-			// 	Thread.sleep(20);
-			// }
-			// catch(InterruptedException e){
-			// 	e.printStackTrace();
-			// }
-			//out.flush();
-			message = sc.nextLine();
-			//int test = 10;
-			out.println(message);
-			out.flush();
 		}
 	}
 }
