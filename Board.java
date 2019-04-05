@@ -108,6 +108,7 @@ class Board extends JPanel implements ActionListener{
         
     }
 
+
     //initialisation du tableau de fond du jeu
     public void initFond(FondDrol [] f){
 
@@ -347,5 +348,13 @@ class Board extends JPanel implements ActionListener{
     }
     public List<Trappe> getListTrappes(){
         return this.trappes;
+    }
+
+    public boolean getIngame(){
+        return this.ingame;
+    }
+    
+    public Controller getController(){
+        return this.control;
     }
 }

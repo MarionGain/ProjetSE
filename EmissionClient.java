@@ -23,7 +23,7 @@ class EmissionClient implements Runnable{
    //       } catch (InterruptedException e) {
    //          e.printStackTrace();
    //       }
-			message = this.controller.conversionDonneesString();
+			message = this.controller.getEmission();
 
 			if(message != null){
 				System.out.println("Client votre message : ");

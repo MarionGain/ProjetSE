@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-class Controller {
+class Controller extends Thread {
 
     private Position p;
     private Robot robot;
@@ -18,6 +18,9 @@ class Controller {
     private int dy;
     private boolean descendre;
     private boolean monter;
+    private int emetteur;
+    private String reception;
+    private String emission;
 
     private Projectile projectile;
     private int projectileSpeed = 5;
@@ -41,6 +44,9 @@ class Controller {
     private int widthBoard = 1000;
     private int heightBoard = 480;
 
+
+    private Donnees donnees;
+
     public Controller(Board b){
 
         this.board = b;
@@ -60,6 +66,47 @@ class Controller {
         this.etages = b.getListEtages();
         this.trappe = b.getTrappe();
         this.trappes = b.getListTrappes();
+
+        this.donnees = null;
+
+    }
+
+    public int getDirectionTir(){
+        return this.directionTir;
+    }
+
+    public int getEmetteur (){
+        return this.emetteur;
+    }
+    synchronized public void setReception(String r){
+        this.reception = r;
+    }
+
+    public String getReception(){
+        return this.reception;
+    }
+
+    synchronized public void setEmission(String e){
+        this.emission = e;
+    }
+
+    public String getEmission(){
+        return this.emission;
+    }
+
+    public Board getBoard(){
+        return this.board;
+    }
+
+    public void run(){
+
+        while(!this.getBoard().getIngame()){
+            if(this.getReception() != null){
+                Donnees data = new Donnees();
+                data.conversionStringDonnees(this.getReception());
+            }
+
+        }
 
     }
 
@@ -319,17 +366,20 @@ class Controller {
             dx = -2;
             robot.setDirection(1);
             directionTir = 1;
+            this.donnees = new Donnees(this.getEmetteur(),Consts.ROBOT,Consts.DEPLACEMENT,Consts.GAUCHE);
         }
 
         if (key == KeyEvent.VK_RIGHT) {
             dx = 2;
             robot.setDirection(2);
             directionTir = 2;
+            this.donnees = new Donnees(this.getEmetteur(),Consts.ROBOT,Consts.DEPLACEMENT,Consts.DROITE);
         }
 
         if (key == KeyEvent.VK_UP) {
             dy = -2;
             monter = true;
+            this.donnees = new Donnees(this.getEmetteur(),Consts.ROBOT,Consts.DEPLACEMENT,Consts.HAUT);
         }
 
         if (key == KeyEvent.VK_DOWN) {
@@ -341,12 +391,16 @@ class Controller {
             //         }
             //     }
             // }
-
+            this.donnees = new Donnees(this.getEmetteur(),Consts.ROBOT,Consts.DEPLACEMENT,Consts.BAS);
         }
         
         if (key == KeyEvent.VK_SPACE) {
             tir();
+            this.donnees = new Donnees(this.getEmetteur(),Consts.ROBOT,Consts.TIR,this.getDirectionTir());
         }
+
+        this.setEmission(donnees.conversionDonneesString());
+
     }
 
 //quand on relache la touche
@@ -370,32 +424,5 @@ class Controller {
         if (key == KeyEvent.VK_DOWN) {
             robot.setPassage(false);
         }
-    }
-
-
-    public String conversionDonneesString(){
-        String s = null;
-        
-
-
-
-
-
-
-
-
-
-
-        return s;
-    }
-
-
-    public void conversionStringDonnees(String s){
-         
-        // if(s.)
-
-
-
-
     }
 }

@@ -33,7 +33,7 @@ class EmissionServeur implements Runnable{
 	        	e.printStackTrace();
 	     	}
 
-	     	message = this.controller.conversionDonneesString();
+	     	message = this.controller.getEmission();
          	if(message != null){
 
 				//int test = 10;

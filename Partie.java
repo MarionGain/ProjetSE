@@ -171,6 +171,7 @@ class Partie {
 
 			// rajouter fenetre choisir de rejoindre une partie;
 			this.creationClient();
+			this.getBoard().getController().start();
 		// } 
 		// else {
 		// 	System.out.println("Aucune partie n'est disponible, veuillez réessayer");

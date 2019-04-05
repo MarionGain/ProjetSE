@@ -26,7 +26,7 @@ class ReceptionClient implements Runnable{
 				
 				if(message != null){
 					System.out.println("Le serveur dit " + message);
-					this.controller.conversionStringDonnees(message);
+					this.controller.setReception(message);
 				}
 				// else {
 				// 	System.out.println("pas de message");
