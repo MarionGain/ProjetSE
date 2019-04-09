@@ -1,4 +1,2 @@
-Marion : 1000
-Marion : 10000
-Marion : 1900
 Marion : 300
+Laura : 13300

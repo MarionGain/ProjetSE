@@ -1,22 +1,22 @@
 import java.io.*;
+import java.util.*;
 
 class Score {
 
 	// attributs
 	private int score;
-	private PrintWriter p;
+ 	private String nom;
 
 	// constructeur par defaut		 
 	public Score(){
 		this.score = 0;
-		try {
-			this.p = new PrintWriter("score.txt");
-		}
+	}
 
-		catch(IOException e){
-			e.printStackTrace();
-		}
-		
+	// constructeur  
+  	public Score(int score, String nom){
+
+	    this.score = score;
+	    this.nom = nom;
 	}
 
 	//	pas d'accesseur en ecriture on ne modifie pas le score manuellement 
@@ -24,29 +24,31 @@ class Score {
 		return this.score;
 	}
 
-	public void setScore(int s){
-    this.score = s;
+  	public void setScore(int s){
+    	this.score = s;
   	}
 
+  	public String getNom(){
+    	return this.nom;
+  	}
+   	
+   	public void setNom(String n){
+    	this.nom = n;
+  	}
+	
 	// methodes d'ajout score 
 	public void ajoutFamille(int niveau){
 		int scoreFamille = 200; // exemple
-		this.score = scoreFamille * niveau;
-
+		this.score += scoreFamille * niveau;
 	}
 
 	public void ajoutMonstre(int niveau){
 		int scoreMonstre = 100; // exemple
-		this.score = scoreMonstre * niveau; 
+		this.score += scoreMonstre * niveau; 
 	}
 
-
-    public void saveScore(String nom){
-       String score = "" + this.getScore();
-       p.write(nom + " : " + score+"\n");
-       p.flush();
-
-       
-    }
-
+  	public String toString(){
+	    String s = this.getNom() + " : " + this.getScore();
+	    return s;
+  	}
 }
