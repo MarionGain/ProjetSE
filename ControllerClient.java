@@ -142,7 +142,7 @@ class ControllerClient extends Controller {
 
         //score
         else if(data.isScore()){
-            this.robot.getScoreRobot().setScore(data.getArg1());
+            this.robot.getScore().setScore(data.getArg1());
         }
 
         //nombre de vie

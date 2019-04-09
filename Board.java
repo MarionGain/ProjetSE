@@ -236,7 +236,7 @@ class Board extends JPanel implements ActionListener{
 
         g.setFont(f2);
         g.drawString("JOUEUR " + numJoueur,B_Width/8-120,B_Height/8-20);
-        g.drawString("SCORE      " + robot.getScoreRobot().getScore(),B_Width/8-120,B_Height/8+10);
+        g.drawString("SCORE      " + robot.getScore().getScore(),B_Width/8-120,B_Height/8+10);
 
         g.drawString("NOMBRE DE VIES     " + robot.getNbVies(),B_Width/8-120,B_Height/8+40);
         g.drawString("HIGHSCORE",3*B_Width/4+40,B_Height/8-20);

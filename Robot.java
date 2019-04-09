@@ -107,11 +107,11 @@ class Robot {
     }
     // Dorine ne les a pas 
 
-    public Score getScoreRobot(){
+    public Score getScore(){
         return this.score;
     }
 
-    public void setScoreRobot(Score s){
+    public void setScore(Score s){
         this.score = s;
     }
 
