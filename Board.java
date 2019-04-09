@@ -25,8 +25,8 @@ class Board extends JPanel implements ActionListener{
     private ImageIcon ii;
     private Timer timer;
     private boolean ingame;
-    private int B_Width = 1000;
-    private int B_Height = 480;
+    private int B_Width = Consts.B_WIDTH;
+    private int B_Height = Consts.B_HEIGHT;
 
     private Robot robot;
     private Projectile projectile;
@@ -34,11 +34,10 @@ class Board extends JPanel implements ActionListener{
     private List<Monstre> monstres;
     private Famille famille;
 
-    private Controller control;
+    private ControllerClient controlClient;
 
     //provisioire pour affichage
     private int nbVies = 3;
-    private int score = 100000;
     private int numJoueur = 1;
 
     //image de fond
@@ -75,6 +74,8 @@ class Board extends JPanel implements ActionListener{
 
         ingame = true;
 
+        controlClient = null;
+
         setPreferredSize(new Dimension(B_Width, B_Height));
 
         initFond(fond);
@@ -100,11 +101,11 @@ class Board extends JPanel implements ActionListener{
 
         famille = new Famille(etages.get(3),0,2);
 
-        control = new Controller(this);
 
         // gestion images vitesse
         timer = new Timer(vitesse, this);
         timer.start();
+
         
     }
 
@@ -150,6 +151,11 @@ class Board extends JPanel implements ActionListener{
         List<Trappe> trappes3 = new ArrayList<Trappe>();
         trappes3.add(new Trappe());
         trappes3.add(new Trappe());
+
+        trappes.addAll(trappes1);
+        trappes.addAll(trappes2);
+        trappes.addAll(trappes3);
+
 
         //creation des etage
         etages.add(new Etage(trappes1,B_Height-9 * (B_Height/16)-10));
@@ -230,7 +236,7 @@ class Board extends JPanel implements ActionListener{
 
         g.setFont(f2);
         g.drawString("JOUEUR " + numJoueur,B_Width/8-120,B_Height/8-20);
-        g.drawString("SCORE      " + score,B_Width/8-120,B_Height/8+10);
+        g.drawString("SCORE      " + robot.getScoreRobot().getScore(),B_Width/8-120,B_Height/8+10);
 
         g.drawString("NOMBRE DE VIES     " + robot.getNbVies(),B_Width/8-120,B_Height/8+40);
         g.drawString("HIGHSCORE",3*B_Width/4+40,B_Height/8-20);
@@ -288,23 +294,17 @@ class Board extends JPanel implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent evt){
-        control.testCollision();
-        control.moveRobot();
-        control.moveMonstre();
-        control.updateMonstre();
-        control.updateProjectile();
-        control.moveFamille();
         repaint();
     }
 
     private class TAdapter extends KeyAdapter {
 
         public void keyReleased(KeyEvent e) {
-            control.keyReleased(e);
+            if(controlClient != null)   controlClient.keyReleased(e);
         }
 
         public void keyPressed(KeyEvent e) {
-            control.keyPressed(e);
+            if(controlClient != null)   controlClient.keyPressed(e);
         }
     }
 
@@ -354,7 +354,11 @@ class Board extends JPanel implements ActionListener{
         return this.ingame;
     }
     
-    public Controller getController(){
-        return this.control;
+    public ControllerClient getController(){
+        return this.controlClient;
+    }
+
+    public void setController(ControllerClient c){
+        this.controlClient = c;
     }
 }
