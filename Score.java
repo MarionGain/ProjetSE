@@ -24,6 +24,10 @@ class Score {
 		return this.score;
 	}
 
+	public void setScore(int s){
+    this.score = s;
+  	}
+
 	// methodes d'ajout score 
 	public void ajoutFamille(int niveau){
 		int scoreFamille = 200; // exemple

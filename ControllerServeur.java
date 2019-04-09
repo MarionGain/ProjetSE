@@ -267,7 +267,7 @@ class ControllerServeur extends Controller implements ActionListener {
                         monstre.setVisible(false);
                         projectile.setVisible(false);
             
-                        robot.getScoreRobot().ajoutMonstre(robot.getNiveau());
+                        robot.getScore().ajoutMonstre(robot.getNiveau());
                         //System.out.println(robot.getScoreRobot().getScore());
                         // System.out.println("collision projectile monstre");
                     }
@@ -280,7 +280,7 @@ class ControllerServeur extends Controller implements ActionListener {
             Rectangle rFamille = famille.getBounds();
             if(rRobot.intersects(rFamille)){
                 famille.setVisible(false);
-                robot.getScoreRobot().ajoutFamille(robot.getNiveau());
+                robot.getScore().ajoutFamille(robot.getNiveau());
                 //System.out.println("collision robot famille");
             }
         }
