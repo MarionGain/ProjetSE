@@ -8,13 +8,8 @@ class Consts {
 
 	// Direction mouvements
 
-	public static final int HAUT = 1;
-	public static final int BAS = 2;
 	public static final int GAUCHE = 3;
 	public static final int DROITE = 4;
-	public static final int DIRECTION1 = 1;
-	public static final int DIRECTION2 = 2; 
-
 
 	//numero de emetteur
 
@@ -27,13 +22,13 @@ class Consts {
 
 	//type d objet
 
-	public static final int INT = 1;
-	public static final int BOOLEAN = 2;
-
+	public static final int SCORE = 1; 
+	public static final int TRAPPE = 2;
 	public static final int ROBOT = 3; // 1: le joueur envoie son deplacement au serveur 2:le serveur envoie aux clients le deplacement d un robot qu il a recu
 	public static final int PROJECTILE = 4; //le serveur envoie au joueur la position du projectile d un robot
 	public static final int MONSTRE = 5;  // le serveur gere le deplacement des monstres et envoie leur mouvements aux joueurs
 	public static final int FAMILLE = 6;  // le serveur gere le deplacement des familles et envoie leur mouvements aux joueurs
+	public static final int NBVIES = 7;
 
 	public static final int FOND = 9;  //serveur envoie au debut du jeu les donnees pour le fond
 
@@ -42,20 +37,22 @@ class Consts {
 	public static final int JOUEUR3 = 12; //serveur envoie position de depart du joueur a tous les clients
 	public static final int JOUEUR4 = 13; //serveur envoie position de depart du joueur a tous les clients
 
+	public static final int CLAVIER = 14;
+
 
 //on essaye d envoyer que des positions ainsi, chaque controller client va calculer tout seul si un robot reviens au point de depart, si il est mort, si un monstre est mort etc.
 //cours de partie
 
-	//action Robot
 
-	public static final int DEPLACEMENT = 1;
-	public static final int TIR = 2;
+	//action clavier
+	public static final int TIR = 1;
+	public static final int PASTIR = 0;
 
 
-	//action Projectile
+	//arg3 
+	public static final int VISIBLE = 1;
+	public static final int PASVISIBLE = 0;
 
-	
-	public static final int DIRECTIONTIR =2;
 
 
 //initialisation du plateau
@@ -114,7 +111,6 @@ class Consts {
 	public static final int POSITIONETAGE10 = 3;
 
 
-
 	//position Famille
 	public static final int POSITIONFX = 0;
 	public static final int POSITIONETAGEF = 3;
@@ -124,14 +120,15 @@ class Consts {
 //fin de partie
 
 	//score
-	public static final int SCORE = 3; //a voir si c est une action du robot.. 
+	
 	
 
 
 	// Transfert donnees
 
 	public static final String DEBUTCHAINE = "S";
-	public static final String SEPARCHAINE = "-";
+	public static final String SEPARCHAINE = "/";
+        public static final String FINCHAINE = "\n";
 
 
 }
