@@ -251,7 +251,10 @@ class ControllerServeur extends Controller implements ActionListener {
                     robot.vieEnMoins();
                     // if(robot.getVie()==0){
                     //     //condition pour remove le robot de la liste si sa vie est =0 et recuperation des scores
+                            //Si tout le monde a une vie = 0 : on envoie une constante de fin, 
+                            //on fait le classement et on envoie l arraylist du classement au client pour qu il l affiche 
                     // }
+
                     //System.out.println("collision robot monstre");
                 } 
             }
