@@ -51,6 +51,7 @@ class ControllerServeur extends Controller implements ActionListener {
 
 
     private Donnees donnees;
+    private Classement classement;
 
     public ControllerServeur(BoardServeur b, Socket s){
 
@@ -69,6 +70,8 @@ class ControllerServeur extends Controller implements ActionListener {
         this.trappes = b.getListTrappes();
 
         this.donnees = null;
+        this.classement = new Classement();
+        this.classement.initClassement();
         
         this.reception = new Reception(this,s);
         this.emission = new Emission(this,s);
@@ -253,6 +256,22 @@ class ControllerServeur extends Controller implements ActionListener {
                     //     //condition pour remove le robot de la liste si sa vie est =0 et recuperation des scores
                             //Si tout le monde a une vie = 0 : on envoie une constante de fin, 
                             //on fait le classement et on envoie l arraylist du classement au client pour qu il l affiche 
+                    
+
+                    // code classement
+                        // this.classement.ajoutScore(this.robot.getScore());
+                        // this.classement.sauvegardeFichier();
+
+                        // pour récupérer arrayList de Score
+                    // this.classement.getClassement().get(i).getScore();
+
+                    // affichage classement fin de jeu
+                    // for(Score score : this.classement){
+                    //     String s = score.toString();
+                    //     // envoie string serveur
+                    // }
+             
+
                     // }
 
                     //System.out.println("collision robot monstre");

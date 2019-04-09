@@ -25,6 +25,7 @@ class Emission /*implements Runnable*/{
         out.println(message);
         out.flush();
     }
+    // implémenter nouvelle méthode pour envoyer le classement directement sous forme de string
 
 	// public void run(){
 

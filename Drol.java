@@ -20,7 +20,7 @@ public class Drol extends JFrame{
         catch(IOException e){
             e.printStackTrace();
         }
-        this.classement = new Classement(fichier);
+        this.classement = new Classement();
 
         this.classement.initClassement("score.txt");
         

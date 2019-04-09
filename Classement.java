@@ -8,20 +8,23 @@ class Classement{
     private BufferedReader lecteur;
     private FileReader fr;
     private PrintWriter p;
-    private FileWriter fw;
+    // private FileWriter fw;
 
-    public Classement(FileWriter fichier){
+    public Classement(){
 
     	this.classement = new ArrayList<Score>();
         try {
-            this.fw = fichier;
-            this.p = new PrintWriter(fichier);
             this.fr = new FileReader("score.txt");
+            this.p = new PrintWriter(new FileWriter("score.txt", true));
             this.lecteur = new BufferedReader(fr);
         }
         catch(IOException e){
           e.printStackTrace();
         }
+    }
+
+    public ArrayList<Score> getClassement(){
+        return this.classement;
     }
 
     public void initClassement(String fichier){
@@ -140,7 +143,8 @@ class Classement{
     	   }
             taille --;
     	}
-        afficherClassement();
+        // afficherClassement();
+        // this.sauvegardeFichier();
     }
 
 
@@ -163,7 +167,7 @@ class Classement{
     }
 
     public void sauvegardeFichier(){
-        updateClassement();
+        this.updateClassement();
         try {
             File f = new File("score.txt");
             f.delete();
@@ -180,6 +184,7 @@ class Classement{
             }
         } 
     }   
+
 }
 
 
