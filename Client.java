@@ -6,6 +6,7 @@ public class Client implements Runnable{
 	private Socket socket;
 	private Thread t1;
 	private Board board;
+    private Controller control;
 	// private PrintWriter out = null;
 	// private BufferedReader in = null; 
 	// int port = 80;
@@ -13,13 +14,14 @@ public class Client implements Runnable{
 
 	public Client(int port, String ip, Board b){
 		
-			this.board = b;
+		this.board = b;
 
 		try{
 
 			this.socket = new Socket(ip,port); 
-			// this.out = new PrintWriter(socket.getOutputStream());
-			// this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			ControllerClient controllerClient = new ControllerClient(this.board,this.socket);
+			board.setController(controllerClient);
+			
 		}
 
 		catch(UnknownHostException e){
@@ -28,13 +30,12 @@ public class Client implements Runnable{
 		
 		catch(IOException e){
 			System.err.println("Aucun serveur à l'écoute du port " + socket.getLocalPort());
-		}
-		
+		}	
 		
 	}
 
 	public void run(){
- 		t1 = new Thread(new GestionDonneesClient(socket, board));
+ 		//t1 = new Thread(new GestionDonneesClient(socket, board));
  		// try{
  		// 	System.out.println(in.readLine());
  		// }
@@ -43,6 +44,6 @@ public class Client implements Runnable{
  		// }
 		System.out.println("Le client est connecté");
 
-		t1.start();
+		//t1.start();
 	}
 }
