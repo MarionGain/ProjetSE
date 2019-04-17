@@ -57,7 +57,7 @@ class Etage {
 	}
 
 	public void doEtage(Graphics g, int x, int y, int largeur, int hauteur ){
-		g.fillRect(x,y,largeur,hauteur);
+		g.fillRect(x-100,y,largeur+200,hauteur);
 	}
 
 	public int getWidth(){
@@ -67,9 +67,9 @@ class Etage {
 	public int getHeight(){
 		return this.height;
 	}
-
+	//getWidth()+20 : pour eviter que le robot tombe quand il veux passer par le cote
 	public Rectangle getBounds(){
-		return new Rectangle(this.getPosition().getX(), this.getPosition().getY(), this.getWidth(), this.getHeight());
+		return new Rectangle(this.getPosition().getX()-100, this.getPosition().getY(), this.getWidth()+200, this.getHeight());
 	}
 
 

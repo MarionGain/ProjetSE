@@ -123,8 +123,13 @@ class Partie {
 
 	public void creationServeur(){
 		 // this.serveur = new Serveur(80,1);
-		 // serveur.communiquer(0);
-		Thread ts = new Thread(new Serveur(2000));
+		 // serveur.communiquer(0);	
+		System.out.println("Veuillez saisir un pseudo : ");
+		String nom = sc.nextLine();
+		Robot robot = new Robot(nom);
+		this.getBoard().setRobot(robot);
+		this.getBoard().setProjectile(new Projectile(robot));
+		Thread ts = new Thread(new Serveur(2000, this.board.getRobot()));
 		this.setPartie(true);
 		ts.start();
 		
@@ -135,9 +140,7 @@ class Partie {
 		System.out.println("Veuillez saisir l'adresse ip indiquée sur la machine de l'hôte"); // a modifier 
 		Scanner sc = new Scanner(System.in); 
 		String ip = sc.nextLine();
-		System.out.println("Veuillez saisir un pseudo : ");
-		String nom = sc.nextLine();
-		this.getBoard().getRobot().setNom(nom);
+	
 		Thread tc = new Thread(new Client(2000,ip,board));
 		tc.start();
 
@@ -171,6 +174,7 @@ class Partie {
 
 			// rajouter fenetre choisir de rejoindre une partie;
 			this.creationClient();
+			//this.getBoard().getController().start();
 		// } 
 		// else {
 		// 	System.out.println("Aucune partie n'est disponible, veuillez réessayer");

@@ -12,13 +12,12 @@ class Robot {
     private Position posCourante;
     private Image imRobot;
     private ImageIcon i;
-    private int nbVies = 3;
-
-    private boolean passage;   
+    private int nbVies = 3;   
 
     // Dorine ne les a pas 
     private Score score;
     private String nom;
+    private int niveau;
 
     private boolean visible;
     private int x;
@@ -30,11 +29,23 @@ class Robot {
         loadImage();
         posOrigine = new Position(0,0);
         posCourante = new Position(0,0);
-        passage = false;
-        direction = 2;
+        direction = Consts.DROITE;
 
         this.score = new Score();
         this.nom = "";
+        this.niveau = 1;
+    }
+
+    public Robot(String nom){
+        visible = true;
+        loadImage();
+        posOrigine = new Position(0,0);
+        posCourante = new Position(0,0);
+        direction = Consts.DROITE;
+
+        this.score = new Score(0,nom);
+        this.nom = nom;
+        this.niveau = 1;
     }
 
     public void loadImage(){
@@ -43,7 +54,7 @@ class Robot {
     }
 
     public Image getImage(){
-        if(direction == 1){
+        if(direction == Consts.GAUCHE){
             i = new ImageIcon("Images/Personnages/robotGauche.png");
             imRobot = i.getImage();
         }
@@ -91,17 +102,12 @@ class Robot {
         return this.nbVies;
     }
 
+    public void setNbVies(int nbv){
+        this.nbVies = nbv;
+    }
+
     public void vieEnMoins(){
         this.nbVies --;
-    }
-
-
-    public boolean getPassage(){
-        return this.passage;
-    }
-
-    public void setPassage(boolean p){
-        this.passage = p;
     }
 
     public int getDirection(){
@@ -113,8 +119,12 @@ class Robot {
     }
     // Dorine ne les a pas 
 
-    public Score getScore(){
+    public Score getScoreRobot(){
         return this.score;
+    }
+
+    public void setScoreRobot(Score s){
+        this.score = s;
     }
 
     public String getNom(){
@@ -123,6 +133,14 @@ class Robot {
 
     public void setNom(String nom){
         this.nom = nom;
+    }
+
+    public int getNiveau(){
+        return this.niveau;
+    }
+
+    public void setNiveau(int niv){
+        this.niveau = niv;
     }
 
     //retourne les "limitations" du rectangle de l image necessaire pour la collision

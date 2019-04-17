@@ -25,8 +25,9 @@ class Board extends JPanel implements ActionListener{
     private ImageIcon ii;
     private Timer timer;
     private boolean ingame;
-    private int B_Width = 1000;
-    private int B_Height = 480;
+    private boolean gagne;
+    private int B_Width = Consts.B_WIDTH;
+    private int B_Height = Consts.B_HEIGHT;
 
     private Robot robot;
     private Projectile projectile;
@@ -34,11 +35,10 @@ class Board extends JPanel implements ActionListener{
     private List<Monstre> monstres;
     private Famille famille;
 
-    private Controller control;
+    private ControllerClient controlClient;
 
     //provisioire pour affichage
     private int nbVies = 3;
-    private int score = 100000;
     private int numJoueur = 1;
 
     //image de fond
@@ -62,6 +62,7 @@ class Board extends JPanel implements ActionListener{
     private int posCouranteY;
 
     private int vitesse = 15;
+    private Classement classement;
 
     //constructeur du Jpanel Board
     public Board(){
@@ -75,6 +76,8 @@ class Board extends JPanel implements ActionListener{
 
         ingame = true;
 
+        controlClient = null;
+
         setPreferredSize(new Dimension(B_Width, B_Height));
 
         initFond(fond);
@@ -82,11 +85,13 @@ class Board extends JPanel implements ActionListener{
         choixFond= (int)(Math.random()*23);
 
         ingame = true;
+        gagne = false;
 
         setPreferredSize(new Dimension(B_Width, B_Height));
 
-        robot = new Robot();
-        projectile = new Projectile(robot);
+        robot = null;
+        
+        projectile =null;
 
         trappe = new Trappe();
         trappes = new ArrayList<Trappe>();
@@ -100,13 +105,15 @@ class Board extends JPanel implements ActionListener{
 
         famille = new Famille(etages.get(3),0,2);
 
-        control = new Controller(this);
+        this.classement = new Classement();
 
         // gestion images vitesse
         timer = new Timer(vitesse, this);
         timer.start();
+
         
     }
+
 
     //initialisation du tableau de fond du jeu
     public void initFond(FondDrol [] f){
@@ -149,6 +156,11 @@ class Board extends JPanel implements ActionListener{
         List<Trappe> trappes3 = new ArrayList<Trappe>();
         trappes3.add(new Trappe());
         trappes3.add(new Trappe());
+
+        trappes.addAll(trappes1);
+        trappes.addAll(trappes2);
+        trappes.addAll(trappes3);
+
 
         //creation des etage
         etages.add(new Etage(trappes1,B_Height-9 * (B_Height/16)-10));
@@ -193,9 +205,17 @@ class Board extends JPanel implements ActionListener{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        doFond(g,fond,choixFond);
-        doMap(g,etages,trappes);
-        doDrawing(g);
+        if(ingame){
+            doFond(g,fond,choixFond);
+            doMap(g,etages,trappes);
+            doDrawing(g);
+        }
+        else if(!gagne){
+            doGameOver(g);
+        }
+        else{
+            doWin(g);
+        }
         
         Toolkit.getDefaultToolkit().sync();
     }
@@ -229,9 +249,10 @@ class Board extends JPanel implements ActionListener{
 
         g.setFont(f2);
         g.drawString("JOUEUR " + numJoueur,B_Width/8-120,B_Height/8-20);
-        g.drawString("SCORE      " + score,B_Width/8-120,B_Height/8+10);
-
-        g.drawString("NOMBRE DE VIES     " + robot.getNbVies(),B_Width/8-120,B_Height/8+40);
+        if(robot != null){
+            g.drawString("SCORE      " + robot.getScoreRobot().getScore(),B_Width/8-120,B_Height/8+10);
+            g.drawString("NOMBRE DE VIES     " + robot.getNbVies(),B_Width/8-120,B_Height/8+40);
+        }
         g.drawString("HIGHSCORE",3*B_Width/4+40,B_Height/8-20);
         
 
@@ -265,12 +286,16 @@ class Board extends JPanel implements ActionListener{
         
         Graphics2D g2d = (Graphics2D) g;
         
-        if(robot.isVisible()){
-            g2d.drawImage(robot.getImage(), robot.getPosition().getX(), robot.getPosition().getY(), this);
+        if(robot != null){
+            if(robot.isVisible() ){
+                g2d.drawImage(robot.getImage(), robot.getPosition().getX(), robot.getPosition().getY(), this);
+            }
         }
         
-        if(projectile.isVisible()==true){
-            g2d.drawImage(projectile.getImage(), projectile.getPosition().getX(),projectile.getPosition().getY(), this);
+        if(projectile != null){
+            if(projectile.isVisible()==true){
+                g2d.drawImage(projectile.getImage(), projectile.getPosition().getX(),projectile.getPosition().getY(), this);
+            }
         }
 
         int i = 0;
@@ -286,24 +311,69 @@ class Board extends JPanel implements ActionListener{
         }
     }
 
+
+    public void doGameOver(Graphics g){
+        String msg = "Game Over";
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics fm = getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+
+        //afficher du text
+        g.drawString(msg, (Consts.B_WIDTH - fm.stringWidth(msg)) / 2,60);
+
+        for(int i =0 ; i< 5; i++){
+            g.drawString(this.classement.getClassement().get(i).getNom()+" : "+this.classement.getClassement().get(i).getScore(),(Consts.B_WIDTH / 2) -30, 100+ 40*i);
+        }
+
+        g.drawString("Votre Score : "+this.robot.getScoreRobot().getScore(), (Consts.B_WIDTH / 2) -30, 400);
+    }
+
+    public void doWin(Graphics g){
+        String msg = "Partie Gagnée !";
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics fm = getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+
+        g.drawString(msg, (Consts.B_WIDTH - fm.stringWidth(msg)) / 2,60);
+
+        for(int i =0 ; i< 5; i++){
+            g.drawString(this.classement.getClassement().get(i).getNom()+" : "+this.classement.getClassement().get(i).getScore(),(Consts.B_WIDTH / 2) -30, 100+ 40*i);
+        }
+
+        g.drawString("Votre Score : "+this.robot.getScoreRobot().getScore(), (Consts.B_WIDTH / 2) -30, 400);
+
+    }
+
+
+
+
+
     public void actionPerformed(ActionEvent evt){
-        control.testCollision();
-        control.moveRobot();
-        control.moveMonstre();
-        control.updateMonstre();
-        control.updateProjectile();
-        control.moveFamille();
+        inGame();
         repaint();
     }
+
+    //arreter le timer
+    private void inGame() {
+
+        if (!ingame) {
+            timer.stop();
+        }
+    }
+
 
     private class TAdapter extends KeyAdapter {
 
         public void keyReleased(KeyEvent e) {
-            control.keyReleased(e);
+            if(controlClient != null)   controlClient.keyReleased(e);
         }
 
         public void keyPressed(KeyEvent e) {
-            control.keyPressed(e);
+            if(controlClient != null)   controlClient.keyPressed(e);
         }
     }
 
@@ -319,8 +389,16 @@ class Board extends JPanel implements ActionListener{
         return this.robot;
     }
 
+    public void setRobot(Robot robot){
+        this.robot = robot;
+    }
+
     public Projectile getProjectile(){
         return this.projectile;
+    }
+
+    public void setProjectile(Projectile projectile){
+        this.projectile = projectile;
     }
 
     public Monstre getMonstre(){
@@ -347,5 +425,33 @@ class Board extends JPanel implements ActionListener{
     }
     public List<Trappe> getListTrappes(){
         return this.trappes;
+    }
+
+    public boolean getInGame(){
+        return this.ingame;
+    }
+
+    public void setInGame(boolean ig){
+        this.ingame = ig;
+    }
+
+    public boolean getGagne(){
+        return this.gagne;
+    }
+
+    public void setGagne(boolean g){
+        this.gagne = g;
+    }
+    
+    public ControllerClient getController(){
+        return this.controlClient;
+    }
+
+    public void setController(ControllerClient c){
+        this.controlClient = c;
+    }
+
+    public void setClassement(Classement c){
+        this.classement = c;
     }
 }

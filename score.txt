@@ -1,4 +1,10 @@
-Marion : 1000
-Marion : 10000
-Marion : 1900
-Marion : 300
+kali : 0
+dodo : 100
+boubou : 100
+matt : 100
+roro : 100
+gege : 100
+fabien : 100
+dorine : 1200
+Marion : 1200
+dori : 1200
